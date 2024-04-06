@@ -9,6 +9,7 @@ public class ProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
 		//Koji was here
+		// jakub was also here :)
 	}
 
 }
