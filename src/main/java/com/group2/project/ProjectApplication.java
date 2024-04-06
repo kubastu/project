@@ -11,10 +11,12 @@ public class ProjectApplication {
 		randomFunction();
 
 	}
-
 	public static void randomFunction(){
 		System.out.println("Hello");
 	}
 
+	public static void anotherFunction(){
+		System.out.println("another function");
+	}
 
 }
