@@ -13,6 +13,7 @@ public class ProjectApplication {
 	}
 	public static void randomFunction(){
 		System.out.println("Hello");
+		// adding comment here
 	}
 
 	public static void anotherFunction(){
