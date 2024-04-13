@@ -4,10 +4,13 @@ This is sample code associated with [DePaul SE452](http://www.cdm.depaul.edu/aca
 
 ## Project Members
 
-| Member | Area  | Saying |
-| ----------- | ----------- | --- |
-| Charlie | Flight | <i>D is for Diploma</i>
-| Pat | Passenger  | <b>Carpe Diem</b>
+| Member   | Area      | Saying |
+|----------|-----------| --- |
+| Marina   | Flight    | <i>D is for Diploma</i>
+| Koji     | Passenger | <b>Carpe Diem</b>
+| Jakub    | Passenger | <b>Carpe Diem</b>
+| Piyush   | Passenger | <b>Carpe Diem</b>
+| Sushanth | Passenger | <b>Carpe Diem</b>
 
 <br/>
 
