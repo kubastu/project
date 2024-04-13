@@ -15,7 +15,7 @@ This is sample code associated with [DePaul SE452](http://www.cdm.depaul.edu/aca
 <br/>
 
 ## Conflict Resolution
-Winner of bast of 2 out of 3 winner of virtual Rock paper scissor decision
+Winner is 2 out of 3 of virtual rock paper scissor decision
 
 <br/>
 
