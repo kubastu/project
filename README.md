@@ -1,5 +1,5 @@
 ## Purpose
-This is sample code associated with [DePaul SE452](http://www.cdm.depaul.edu/academics/pages/courseinfo.aspx?Subject=SE&CatalogNbr=452) project sample using airline reservation as problem domain.
+Create a Calendar application where user can add/delete events and set reminders. Also can check the weather for the next seven days.
 <br>
 
 ## Project Members
@@ -15,12 +15,12 @@ This is sample code associated with [DePaul SE452](http://www.cdm.depaul.edu/aca
 <br/>
 
 ## Conflict Resolution
-Winner is 2 out of 3 of virtual rock paper scissor decision
+Winner is 2 out of 3 of virtual rock paper scissor decision.
 
 <br/>
 
 ## Communication Mechanism
-Will meet using Discord and Github.  Will meet once a week on days Thursday through Sunday.
+Will meet using Discord and Github.  Will meet once a week on days Thursday through Sunday for two to three hours.
 
 <br/>
 
