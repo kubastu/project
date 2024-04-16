@@ -7,7 +7,7 @@ Create a Calendar application where user can add/delete events and set reminders
 | Member         | Area            | Saying |
 |----------------|-----------------| --- |
 | Marina Ljuboja | SQL Persistence | <b>Nautilus</b>
-| Koji           | N/A             | <b>Nautilus</b>
+| Koji           | Weather API Integration             | <b>Nautilus</b>
 | Jakub          | N/A             | <b>Nautilus</b>
 | Piyush         | N/A             | <b>Nautilus</b>
 | Sushanth       | CRUD Operations intergration             | <b>Nautilus</b>
