@@ -10,7 +10,7 @@ Create a Calendar application where user can add/delete events and set reminders
 | Koji           | N/A             | <b>Nautilus</b>
 | Jakub          | N/A             | <b>Nautilus</b>
 | Piyush         | N/A             | <b>Nautilus</b>
-| Sushanth       | N/A             | <b>Nautilus</b>
+| Sushanth       | CRUD Operations intergration             | <b>Nautilus</b>
 
 <br/>
 
