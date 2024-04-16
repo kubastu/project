@@ -27,9 +27,9 @@ Will meet using Discord and Github.  Will meet once a week on days Thursday thro
 ## Decision Made
 | # | Area  | Decision      | Alternative        | Rationale
 | ----------- | ----------- |---------------|--------------------|--- |
-| 1 | IDE | Use Intellij  | VSCode, Eclipse    | Language independent editor so that it can be used in non java course
-| 2 | Dependency Management  | Maven         | Gradle             | Not a fan of XML bloat
-| 3 | Code  | Lombok        | Code template code | We have done too many template code and so don't need to learn that
-| 4 | Configuration Management  | Yaml          | Properties         | Easier to view groups of configuration and it is different than what we learned in other classes with property files and so using this opporutnity to learn something different
+| 1 | IDE | Use Intellij  | VSCode, Eclipse    | Editor that most of us prefer
+| 2 | Dependency Management  | Maven         | Gradle             | We are all familar with Maven
+| 3 | Code  | Lombok        | Code template code | This is what was mentioned in class
+| 4 | Configuration Management  | Yaml          | Properties         | Something new we can learn
 
 
