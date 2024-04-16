@@ -4,13 +4,13 @@ This is sample code associated with [DePaul SE452](http://www.cdm.depaul.edu/aca
 
 ## Project Members
 
-| Member         | Area              | Saying |
-|----------------|-------------------| --- |
-| Marina Ljuboja | NoSQL Persistence | <b>Nautilus</b>
-| Koji           | N/A               | <b>Nautilus</b>
-| Jakub          | N/A               | <b>Nautilus</b>
-| Piyush         | N/A               | <b>Nautilus</b>
-| Sushanth       | N/A               | <b>Nautilus</b>
+| Member         | Area            | Saying |
+|----------------|-----------------| --- |
+| Marina Ljuboja | SQL Persistence | <b>Nautilus</b>
+| Koji           | N/A             | <b>Nautilus</b>
+| Jakub          | N/A             | <b>Nautilus</b>
+| Piyush         | N/A             | <b>Nautilus</b>
+| Sushanth       | N/A             | <b>Nautilus</b>
 
 <br/>
 
