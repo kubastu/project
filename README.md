@@ -10,7 +10,7 @@ This is sample code associated with [DePaul SE452](http://www.cdm.depaul.edu/aca
 | Koji           | N/A             | <b>Nautilus</b>
 | Jakub          | N/A             | <b>Nautilus</b>
 | Piyush         | N/A             | <b>Nautilus</b>
-| Sushanth       | N/A             | <b>Nautilus</b>
+| Sushanth       | CRUD operations integration          | <b>Nautilus</b>
 
 <br/>
 
