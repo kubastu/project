@@ -9,7 +9,7 @@ Create a Calendar application where user can add/delete events and set reminders
 | Marina | SQL Persistence | <b>Nautilus</b>
 | Koji   | Weather API Integration             | <b>Nautilus</b>
 | Jakub  | Google Calendar + Push Reminders    | <b>Nautilus</b>
-| Piyush | N/A             | <b>Nautilus</b>
+| Piyush | Front-end             | <b>Nautilus</b>
 | Sushanth | CRUD Operations intergration             | <b>Nautilus</b>
 
 <br/>
