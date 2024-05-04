@@ -1,5 +1,10 @@
 ## Purpose
 Create a Calendar application where user can add/delete events and set reminders. Also can check the weather for the next seven days.
+
+- Milestone 1: Identify project scope and code base. Also see what individual's task is.
+
+- Milestone 2: Define database structure.
+
 <br>
 
 ## Project Members
