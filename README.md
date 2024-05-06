@@ -30,11 +30,11 @@ Will meet using Discord and Github.  Will meet once a week on days Thursday thro
 <br/>
 
 ## Decision Made
-| # | Area  | Decision      | Alternative        | Rationale
-| ----------- | ----------- |---------------|--------------------|--- |
-| 1 | IDE | Use Intellij  | VSCode, Eclipse    | Editor that most of us prefer
-| 2 | Dependency Management  | Maven         | Gradle             | We are all familar with Maven
-| 3 | Code  | Lombok        | Code template code | This is what was mentioned in class
-| 4 | Configuration Management  | Yaml          | Properties         | Something new we can learn
+| # | Area            | Decision  | Alternative        | Rationale
+| ----------- |-----------------|-----------|--------------------|--- |
+| 1 | Database        | Use mySQL | NoSQL, Firebase    | We are more familiar with mySQL
+| 2 | Defined Objects | Maven     | Gradle             | We are all familar with Maven
+| 3 | Code            | Lombok    | Code template code | This is what was mentioned in class
+
 
 
