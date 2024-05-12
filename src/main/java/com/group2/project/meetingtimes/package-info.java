@@ -1,1 +1,1 @@
-package com.group2.project.MeetingTimes;
+package com.group2.project.meetingtimes;

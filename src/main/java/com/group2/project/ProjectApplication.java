@@ -1,7 +1,7 @@
 package com.group2.project;
 
-import com.group2.project.CalendarObjects.CalendarObject;
-import com.group2.project.CalendarObjects.Event;
+import com.group2.project.calendarobjects.CalendarObject;
+import com.group2.project.calendarobjects.Event;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

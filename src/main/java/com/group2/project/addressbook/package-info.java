@@ -1,1 +1,1 @@
-package com.group2.project.AddressBook;
+package com.group2.project.addressbook;

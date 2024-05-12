@@ -1,1 +1,1 @@
-package com.group2.project.Reminders;
+package com.group2.project.reminders;
