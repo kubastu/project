@@ -1,4 +1,4 @@
-package com.group2.project.CalendarObjects;
+package com.group2.project.calendarobjects;
 
 
 import jakarta.persistence.Column;
