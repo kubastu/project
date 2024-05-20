@@ -15,7 +15,7 @@ Create a Calendar application where user can add/delete events and set reminders
 |--------|------------------------------------------------------------------|
 | Marina | Address Book                                                     |
 | Koji   | Appointment Creation + Calendar Type                             |
-| Jakub  | Reminders                                                        |
+| Jakub  | UI + Reminders                                                        |
 | Piyush | Sharing a Link With Open Meeting Times of People in Address Book |
 | Sushanth | To-Do/Task List                                                  |
 
