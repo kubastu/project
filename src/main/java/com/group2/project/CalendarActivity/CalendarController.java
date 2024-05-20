@@ -1,9 +1,13 @@
 package com.group2.project.CalendarActivity;
 
+import com.group2.project.calendarobjects.CalendarObject;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -38,6 +42,9 @@ public class CalendarController implements Initializable
     @FXML
     private FlowPane calendar;
 
+    @FXML
+    private ListView<String> eventsListView;
+
     // holds mappings for each month to
     //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
 
@@ -66,6 +73,16 @@ public class CalendarController implements Initializable
         rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
 
         drawCalendar();
+
+        // from: https://www.youtube.com/watch?v=Pqfd4hoi5cc&ab_channel=BroCode
+        eventsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                // will handle whenever user clicks on a different element in list view
+                String current = eventsListView.getSelectionModel().getSelectedItem();
+                System.out.println(current);
+            }
+        });
     }
 
     private void respringCalendar()
@@ -98,6 +115,7 @@ public class CalendarController implements Initializable
                         selectedText.setText("Selected Day: " + selected.getMonthValue() + "/" + selected.getDayOfMonth() + "/" + selected.getYear());
                         // get events
                         eventsText.setText("Events For: " + selected.getMonthValue() + "/" + selected.getDayOfMonth() + "/" + selected.getYear());
+                        respringListView();
                     }
                     else if(today.getDayOfMonth() == currentDay && today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth()){
                         currentRect.setStroke(Color.BLUE);
@@ -166,14 +184,16 @@ public class CalendarController implements Initializable
                             selectedDay = currentDate;
                             selected = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), selectedDay, 0, 0, 0, 0, focusedDate.getZone());
                             respringCalendar();
+                            // do listview
+                            respringListView();
 //                            rectangle.setStroke(Color.RED);
 //                            rectangle.setStrokeWidth(strokeWidth + 0.5);
                         });
                     }
-//                    if(selectedDay == currentDate){
-//                        rectangle.setStroke(Color.RED);
-//                        rectangle.setStrokeWidth(strokeWidth + 0.5);
-//                    }
+                    if(selectedDay == currentDate){
+                        rectangle.setStroke(Color.RED);
+                        rectangle.setStrokeWidth(strokeWidth + 0.5);
+                    }
                     if(today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth() && today.getDayOfMonth() == currentDate){
                         rectangle.setStroke(Color.BLUE);
                         rectangle.setStrokeWidth(strokeWidth + 0.5);
@@ -182,13 +202,15 @@ public class CalendarController implements Initializable
                 calendar.getChildren().add(stackPane);
             }
         }
+
+        respringListView();
     }
 
     private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         for (int k = 0; k < calendarActivities.size(); k++) {
             if(k >= 2) {
-                Text moreActivities = new Text("...");
+                Text moreActivities = new Text("..."); //maybe do   + X more
                 calendarActivityBox.getChildren().add(moreActivities);
                 //todo : change this into listview
 //                moreActivities.setOnMouseClicked(mouseEvent -> {
@@ -256,7 +278,8 @@ public class CalendarController implements Initializable
         titleField.setText("");
         descField.setText("");
 
-        ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 16,0,0,0, focusedDate.getZone());
+        // change time depending on calendarobject type
+        ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
 
 //        calendarActivities.add(new CalendarActivity(time, title, 111111));
         addToMap(new CalendarActivity(time, title, 111111));
@@ -297,9 +320,42 @@ public class CalendarController implements Initializable
         }
 
         // todo : can we respring ui instead of completely redraw?
+        // todo : implement respring... causes not clean ui action.
         calendar.getChildren().clear();
         drawCalendar();
-
+        //respringListView();
     }
+
+    private List<CalendarActivity> getEventsForDate()
+    {
+        if(selected == null)
+        {
+            return null;
+        }
+
+        if(     calendarEventMap.get(selected.getYear()) != null &&
+                calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()) != null &&
+                calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()) != null
+        )
+        {
+            return calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth());
+        }
+        return null;
+    }
+
+    // update ui functions below:
+    private void respringListView()
+    {
+        List<CalendarActivity> forSelected = getEventsForDate();
+        eventsListView.getItems().clear();
+        if(forSelected != null && !forSelected.isEmpty())
+        {
+            for(CalendarActivity activity : forSelected)
+            {
+                eventsListView.getItems().add(activity.toString());
+            }
+        }
+    }
+
 
 }
