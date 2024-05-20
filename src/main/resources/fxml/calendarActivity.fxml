@@ -18,12 +18,12 @@
     <HBox alignment="CENTER" layoutX="163.0" layoutY="14.0" prefHeight="44.0" prefWidth="419.0" spacing="5.0">
         <children>
             <Button mnemonicParsing="false" onAction="#backOneMonth" text="&lt;" />
-            <Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" text="####">
+            <Text fx:id="yearText" strokeType="OUTSIDE" strokeWidth="0.0" text="####">
                 <font>
                     <Font size="22.0" />
                 </font>
             </Text>
-            <Text fx:id="month" strokeType="OUTSIDE" strokeWidth="0.0" text="####">
+            <Text fx:id="monthText" strokeType="OUTSIDE" strokeWidth="0.0" text="####">
                 <font>
                     <Font size="22.0" />
                 </font>
@@ -53,7 +53,7 @@
             </font>
          </Text>
          <Line endX="100.0" startX="-100.0" />
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Day:  xx/xx/xxxx">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" fx:id="selectedText" text="Selected Day: xx/xx/xxxx">
             <font>
                <Font size="24.0" />
             </font>
@@ -66,12 +66,12 @@
                <Insets left="8.0" right="8.0" top="8.0" />
             </VBox.margin>
          </ComboBox>
-         <TextField fx:id="titleText" promptText="Title?">
+         <TextField fx:id="titleField" promptText="Title?">
             <VBox.margin>
                <Insets left="8.0" right="8.0" top="8.0" />
             </VBox.margin>
          </TextField>
-         <TextField fx:id="descText" promptText="Description?">
+         <TextField fx:id="descField" promptText="Description?">
             <VBox.margin>
                <Insets left="8.0" right="8.0" top="8.0" />
             </VBox.margin>
@@ -85,7 +85,7 @@
    </VBox>
    <VBox alignment="TOP_CENTER" layoutX="742.0" layoutY="321.0" prefHeight="303.0" prefWidth="298.0">
       <children>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Events For: xx/xx/xxxx">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" fx:id="eventsText" text="Events For: xx/xx/xxxx">
             <font>
                <Font size="28.0" />
             </font>

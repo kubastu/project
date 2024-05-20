@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -12,12 +13,10 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.w3c.dom.css.Rect;
 
 import java.util.*;
 
@@ -26,21 +25,46 @@ public class CalendarController implements Initializable
 
     // JZ: basic elements derived from: https://gist.github.com/Da9el00/f4340927b8ba6941eb7562a3306e93b6
 
-    ZonedDateTime focusedDate, today;
+    private ZonedDateTime focusedDate, today, selected;
 
-    int selectedDay = 0;
+    private int selectedDay = 0;
 
     @FXML
-    private Text year, month;
+    private Text yearText, monthText, selectedText, eventsText;
+
+    @FXML
+    private TextField titleField, descField;
 
     @FXML
     private FlowPane calendar;
+
+    // holds mappings for each month to
+    //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
+
+    // map <year, <month, <day, activityOBJ>>>
+    private final Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> calendarEventMap = new HashMap<>();
+
+    private double calendarWidth;
+    private double calendarHeight;
+    private double strokeWidth = 1;
+    private double spacingH;
+    private double spacingV;
+    private double rectangleWidth;
+    private double rectangleHeight;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         focusedDate = ZonedDateTime.now();
         today = ZonedDateTime.now();
+
+        calendarWidth = calendar.getPrefWidth();
+        calendarHeight = calendar.getPrefHeight();
+        spacingH = calendar.getHgap();
+        spacingV = calendar.getVgap();
+        rectangleWidth = (calendarWidth/7) - strokeWidth - spacingH;
+        rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
+
         drawCalendar();
     }
 
@@ -71,15 +95,18 @@ public class CalendarController implements Initializable
                     {
                         currentRect.setStroke(Color.RED);
                         currentRect.setStrokeWidth(1 + 0.5); // change this
+                        selectedText.setText("Selected Day: " + selected.getMonthValue() + "/" + selected.getDayOfMonth() + "/" + selected.getYear());
+                        // get events
+                        eventsText.setText("Events For: " + selected.getMonthValue() + "/" + selected.getDayOfMonth() + "/" + selected.getYear());
                     }
-                    else if(today.getDayOfMonth() == currentDay){
+                    else if(today.getDayOfMonth() == currentDay && today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth()){
                         currentRect.setStroke(Color.BLUE);
-                        currentRect.setStrokeWidth(1 + 0.5);
+                        currentRect.setStrokeWidth(strokeWidth + 0.5);
                     }
                     else
                     {
                         currentRect.setStroke(Color.BLACK);
-                        currentRect.setStrokeWidth(1);
+                        currentRect.setStrokeWidth(strokeWidth);
                     }
 
                 }
@@ -89,17 +116,11 @@ public class CalendarController implements Initializable
     }
 
     private void drawCalendar(){
-        year.setText(String.valueOf(focusedDate.getYear()));
-        month.setText(String.valueOf(focusedDate.getMonth()));
-
-        double calendarWidth = calendar.getPrefWidth();
-        double calendarHeight = calendar.getPrefHeight();
-        double strokeWidth = 1;
-        double spacingH = calendar.getHgap();
-        double spacingV = calendar.getVgap();
+        yearText.setText(String.valueOf(focusedDate.getYear()));
+        monthText.setText(String.valueOf(focusedDate.getMonth()));
 
         //List of activities for a given month
-        Map<Integer, List<CalendarActivity>> calendarActivityMap = getCalendarActivitiesMonth(focusedDate);
+        Map<Integer, List<CalendarActivity>> calendarActivityMap = calendarEventMap.get(focusedDate.getYear()) == null ? null : calendarEventMap.get(focusedDate.getYear()).get(focusedDate.getMonthValue());
 
         int monthMaxDate = focusedDate.getMonth().maxLength();
         //Check for leap year
@@ -116,9 +137,7 @@ public class CalendarController implements Initializable
                 rectangle.setFill(Color.TRANSPARENT);
                 rectangle.setStroke(Color.BLACK);
                 rectangle.setStrokeWidth(strokeWidth);
-                double rectangleWidth =(calendarWidth/7) - strokeWidth - spacingH;
                 rectangle.setWidth(rectangleWidth);
-                double rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
                 rectangle.setHeight(rectangleHeight);
                 stackPane.getChildren().add(rectangle);
 
@@ -131,16 +150,21 @@ public class CalendarController implements Initializable
                         date.setTranslateY(textTranslationY);
                         stackPane.getChildren().add(date);
 
-                        List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
-                        if(calendarActivities != null){
-                            createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
+                        if(calendarActivityMap != null)
+                        {
+                            List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
+                            if(calendarActivities != null){
+                                createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
+                            }
                         }
+
                         stackPane.setOnMouseClicked(mouseEvent -> {
                             // todo fix this
                             //selectedDate = focusedDate;
                             //System.out.println("CLICKED" + focusedDate.toString());
                             System.out.println("Clicked Date: " + currentDate);
                             selectedDay = currentDate;
+                            selected = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), selectedDay, 0, 0, 0, 0, focusedDate.getZone());
                             respringCalendar();
 //                            rectangle.setStroke(Color.RED);
 //                            rectangle.setStrokeWidth(strokeWidth + 0.5);
@@ -206,21 +230,6 @@ public class CalendarController implements Initializable
         return  calendarActivityMap;
     }
 
-    private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime dateFocus) {
-        List<CalendarActivity> calendarActivities = new ArrayList<>();
-        int year = dateFocus.getYear();
-        int month = dateFocus.getMonth().getValue();
-
-        // insert randomization here. example usecase below.
-//        Random random = new Random();
-//        for (int i = 0; i < 50; i++) {
-//            ZonedDateTime time = ZonedDateTime.of(year, month, random.nextInt(27)+1, 16,0,0,0,dateFocus.getZone());
-//            calendarActivities.add(new CalendarActivity(time, "Hans", 111111));
-//        }
-
-        return createCalendarMap(calendarActivities);
-    }
-
     // JZ: FXML onclick functions below:
 
     @FXML
@@ -242,6 +251,54 @@ public class CalendarController implements Initializable
     @FXML
     private void submitCalendarObject(ActionEvent event)
     {
+        String title = titleField.getText();
+        String desc = descField.getText();
+        titleField.setText("");
+        descField.setText("");
+
+        ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 16,0,0,0, focusedDate.getZone());
+
+//        calendarActivities.add(new CalendarActivity(time, title, 111111));
+        addToMap(new CalendarActivity(time, title, 111111));
+    }
+
+    private void addToMap(CalendarActivity toAdd)
+    {
+        // year
+        if(calendarEventMap.get(selected.getYear()) == null)
+        {
+            calendarEventMap.put(selected.getYear(),
+                    new HashMap<>());
+            calendarEventMap.get(selected.getYear()).put(selected.getMonthValue(), new HashMap<>());
+            calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).put(selected.getDayOfMonth(), new ArrayList<>());
+            calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).add(toAdd);
+        }
+        else
+        {
+            if(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()) == null)
+            {
+                calendarEventMap.get(selected.getYear()).put(selected.getMonthValue(), new HashMap<>());
+                calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).put(selected.getDayOfMonth(), new ArrayList<>());
+                calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).add(toAdd);
+            }
+            else
+            {
+                if(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()) == null)
+                {
+                    calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).put(selected.getDayOfMonth(), new ArrayList<>());
+                    calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).add(toAdd);
+                }
+                else
+                {
+                    calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth())
+                            .add(toAdd);
+                }
+            }
+        }
+
+        // todo : can we respring ui instead of completely redraw?
+        calendar.getChildren().clear();
+        drawCalendar();
 
     }
 
