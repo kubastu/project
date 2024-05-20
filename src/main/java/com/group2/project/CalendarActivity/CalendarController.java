@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import org.w3c.dom.css.Rect;
 
 import java.util.*;
 
@@ -25,7 +26,9 @@ public class CalendarController implements Initializable
 
     // JZ: basic elements derived from: https://gist.github.com/Da9el00/f4340927b8ba6941eb7562a3306e93b6
 
-    ZonedDateTime focusedDate, today, selectedDate;
+    ZonedDateTime focusedDate, today;
+
+    int selectedDay = 0;
 
     @FXML
     private Text year, month;
@@ -39,6 +42,50 @@ public class CalendarController implements Initializable
         focusedDate = ZonedDateTime.now();
         today = ZonedDateTime.now();
         drawCalendar();
+    }
+
+    private void respringCalendar()
+    {
+        // todo : put this in a redundant function
+        int dateOffset = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), 1,0,0,0,0,focusedDate.getZone()).getDayOfWeek().getValue();
+
+        int monthMaxDate = focusedDate.getMonth().maxLength();
+        //Check for leap year
+        if(focusedDate.getYear() % 4 != 0 && monthMaxDate == 29){
+            monthMaxDate = 28;
+        }
+
+        for(int i = 0; i < calendar.getChildren().size(); i++)
+        {
+            StackPane current = (StackPane) calendar.getChildren().get(i);
+            //System.out.println(i);
+            Rectangle currentRect = (Rectangle) current.getChildren().get(0);
+
+            if(i + 1 > dateOffset)
+            {
+                int currentDay = i - dateOffset + 1;
+                //System.out.println("OFFSET: " + dateOffset + "\nCURRENTDAY : " + currentDay + "\nToday: " + today.getDayOfMonth());
+                if(currentDay <= monthMaxDate)
+                {
+                    if(currentDay == selectedDay)
+                    {
+                        currentRect.setStroke(Color.RED);
+                        currentRect.setStrokeWidth(1 + 0.5); // change this
+                    }
+                    else if(today.getDayOfMonth() == currentDay){
+                        currentRect.setStroke(Color.BLUE);
+                        currentRect.setStrokeWidth(1 + 0.5);
+                    }
+                    else
+                    {
+                        currentRect.setStroke(Color.BLACK);
+                        currentRect.setStrokeWidth(1);
+                    }
+
+                }
+            }
+
+        }
     }
 
     private void drawCalendar(){
@@ -92,13 +139,18 @@ public class CalendarController implements Initializable
                             // todo fix this
                             //selectedDate = focusedDate;
                             //System.out.println("CLICKED" + focusedDate.toString());
+                            System.out.println("Clicked Date: " + currentDate);
+                            selectedDay = currentDate;
+                            respringCalendar();
+//                            rectangle.setStroke(Color.RED);
+//                            rectangle.setStrokeWidth(strokeWidth + 0.5);
                         });
                     }
-                    if(selectedDate != null && today.getYear() == selectedDate.getYear() && today.getMonth() == selectedDate.getMonth() && today.getDayOfMonth() == currentDate){
-                        rectangle.setStroke(Color.RED);
-                        rectangle.setStrokeWidth(strokeWidth + 0.5);
-                    }
-                    else if(today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth() && today.getDayOfMonth() == currentDate){
+//                    if(selectedDay == currentDate){
+//                        rectangle.setStroke(Color.RED);
+//                        rectangle.setStrokeWidth(strokeWidth + 0.5);
+//                    }
+                    if(today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth() && today.getDayOfMonth() == currentDate){
                         rectangle.setStroke(Color.BLUE);
                         rectangle.setStrokeWidth(strokeWidth + 0.5);
                     }
@@ -114,19 +166,20 @@ public class CalendarController implements Initializable
             if(k >= 2) {
                 Text moreActivities = new Text("...");
                 calendarActivityBox.getChildren().add(moreActivities);
-                moreActivities.setOnMouseClicked(mouseEvent -> {
-                    //On ... click print all activities for given date
-                    System.out.println("events: " + calendarActivities.size());
-                    System.out.println(calendarActivities);
-                });
+                //todo : change this into listview
+//                moreActivities.setOnMouseClicked(mouseEvent -> {
+//                    //On ... click print all activities for given date
+//                    System.out.println("events: " + calendarActivities.size());
+//                    System.out.println(calendarActivities);
+//                });
                 break;
             }
             Text text = new Text(calendarActivities.get(k).getClientName() + ", " + calendarActivities.get(k).getDate().toLocalTime());
             calendarActivityBox.getChildren().add(text);
-            text.setOnMouseClicked(mouseEvent -> {
-                //On Text clicked
-                System.out.println(text.getText());
-            });
+//            text.setOnMouseClicked(mouseEvent -> {
+//                //On Text clicked
+//                System.out.println(text.getText());
+//            });
         }
         calendarActivityBox.setTranslateY((rectangleHeight / 2) * 0.20);
         calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
@@ -159,11 +212,11 @@ public class CalendarController implements Initializable
         int month = dateFocus.getMonth().getValue();
 
         // insert randomization here. example usecase below.
-        Random random = new Random();
-        for (int i = 0; i < 50; i++) {
-            ZonedDateTime time = ZonedDateTime.of(year, month, random.nextInt(27)+1, 16,0,0,0,dateFocus.getZone());
-            calendarActivities.add(new CalendarActivity(time, "Hans", 111111));
-        }
+//        Random random = new Random();
+//        for (int i = 0; i < 50; i++) {
+//            ZonedDateTime time = ZonedDateTime.of(year, month, random.nextInt(27)+1, 16,0,0,0,dateFocus.getZone());
+//            calendarActivities.add(new CalendarActivity(time, "Hans", 111111));
+//        }
 
         return createCalendarMap(calendarActivities);
     }
