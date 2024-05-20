@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
+<AnchorPane prefHeight="642.0" prefWidth="1054.0" style="-fx-background-color: #f2fafc;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group2.project.CalendarActivity.CalendarController">
+    <FlowPane fx:id="calendar" hgap="10.0" layoutX="14.0" layoutY="116.0" prefHeight="498.0" prefWidth="716.0" vgap="5.0" />
+    <HBox alignment="CENTER" layoutX="163.0" layoutY="14.0" prefHeight="44.0" prefWidth="419.0" spacing="5.0">
+        <children>
+            <Button mnemonicParsing="false" onAction="#backOneMonth" text="&lt;" />
+            <Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" text="####">
+                <font>
+                    <Font size="22.0" />
+                </font>
+            </Text>
+            <Text fx:id="month" strokeType="OUTSIDE" strokeWidth="0.0" text="####">
+                <font>
+                    <Font size="22.0" />
+                </font>
+            </Text>
+            <Button mnemonicParsing="false" onAction="#forwardOneMonth" text="&gt;" />
+        </children>
+    </HBox>
+    <HBox alignment="CENTER" layoutX="14.0" layoutY="78.0" prefHeight="44.0" prefWidth="716.0" spacing="88.75">
+        <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Su" textAlignment="CENTER" />
+            <Text layoutX="213.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mo" textAlignment="CENTER" />
+            <Text layoutX="222.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tu" textAlignment="CENTER" />
+            <Text layoutX="232.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="We" textAlignment="CENTER" />
+            <Text layoutX="241.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Th" textAlignment="CENTER" />
+            <Text layoutX="251.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fr" textAlignment="CENTER" />
+            <Text layoutX="266.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sa" textAlignment="CENTER" />
+        </children>
+        <padding>
+            <Insets right="9.0" />
+        </padding>
+    </HBox>
+   <VBox alignment="TOP_CENTER" layoutX="742.0" layoutY="14.0" prefHeight="303.0" prefWidth="298.0">
+      <children>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Calendar Object" textAlignment="CENTER" wrappingWidth="251.017578125" VBox.vgrow="NEVER">
+            <font>
+               <Font size="22.0" />
+            </font>
+         </Text>
+         <Line endX="100.0" startX="-100.0" />
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Day:  xx/xx/xxxx">
+            <font>
+               <Font size="24.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </Text>
+         <ComboBox fx:id="typeBox" prefHeight="30.0" prefWidth="186.0" promptText="Object Type">
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </ComboBox>
+         <TextField fx:id="titleText" promptText="Title?">
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </TextField>
+         <TextField fx:id="descText" promptText="Description?">
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </TextField>
+         <Button mnemonicParsing="false" onAction="#submitCalendarObject" text="Submit">
+            <VBox.margin>
+               <Insets top="8.0" />
+            </VBox.margin>
+         </Button>
+      </children>
+   </VBox>
+   <VBox alignment="TOP_CENTER" layoutX="742.0" layoutY="321.0" prefHeight="303.0" prefWidth="298.0">
+      <children>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Events For: xx/xx/xxxx">
+            <font>
+               <Font size="28.0" />
+            </font>
+         </Text>
+         <Line endX="100.0" startX="-100.0" />
+         <ListView>
+            <VBox.margin>
+               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </ListView>
+      </children>
+   </VBox>
+   <Line endX="100.0" layoutX="373.0" layoutY="58.0" startX="-100.0" />
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+</AnchorPane>
