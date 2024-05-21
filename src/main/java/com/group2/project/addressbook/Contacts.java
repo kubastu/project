@@ -24,6 +24,8 @@ import lombok.NoArgsConstructor;
 public class Contacts {
 
     //had id here but got an error and program wouldn't build
+    @Id
+    private long id;
 
     @Embedded
     private Person person;

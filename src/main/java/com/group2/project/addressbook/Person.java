@@ -7,18 +7,22 @@ package com.group2.project.addressbook;
  *
  */
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Data;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Data
 @Embeddable
+@Entity
+@Getter
 public class Person {
 
     @Id
-    @GeneratedValue
+    //@GeneratedValue
     private long id;
     private String firstName;
-    private String lastName;
+    private String personLastName;
 }
