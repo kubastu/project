@@ -1,8 +1,8 @@
 app:
   doc:
-    version: First
-    title: Calendar App
-    description: Class Project
+    version: 2022-Fall
+    title: SE352-452 Airline Reservation Project Demo
+    description: This is a sample documentation for SE352-452 Concepts a library for OpenAPI 3 with spring boot.
     terms-of-service: http://swagger.io/terms/
     license:  Apache 2.0
     url: http://springdoc.org

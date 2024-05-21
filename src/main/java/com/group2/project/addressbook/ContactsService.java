@@ -8,7 +8,7 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * Author: Marina Ljuboja
- *
+ * Description: I use lombok here.
  *
  */
 @Service
@@ -19,8 +19,8 @@ public class ContactsService {
 
     public List<Person> list() {
         log.traceEntry("Entered a list");
-        var retval = repo.findAll();
-        log.traceExit("Exited from list", retval);
+        var returnval = repo.findAll();
+        log.traceExit("Exited from list", returnval);
         return repo.findAll();
     }
 

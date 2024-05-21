@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Contacts {
 
-
+    //had id here but got an error and program wouldn't build
 
     @Embedded
     private Person person;
