@@ -13,6 +13,9 @@ import java.util.Date;
 public class Meeting extends CalendarObject
 {
 
+    // todo : Add addressbook implementation
+    // todo:    --> proposed: ArrayList<Contacts> AddressBook
+
     @Column(name = "LOCATION")
     private String location;
 
