@@ -32,11 +32,11 @@ Will meet using Discord and Github.  Will meet once a week on days Thursday thro
 <br/>
 
 ## Decision Made
-| # | Area                          | Decision                         | Alternative | Rationale
-| ----------- |-------------------------------|----------------------------------|------------|--- |
-| 1 | Package-info.java             | Made sure everyone has their own | None       | So everyone can be graded individually
-| 2 |                |          |   | 
-| 3 |  |                            |  | 
+| # | Area            | Decision                                                | Alternative                                        | Rationale
+| ----------- |-----------------|---------------------------------------------------------|----------------------------------------------------|--- |
+| 1 | Individual Work | Made sure everyone has their own distinct contributions | Can do work on what is different from assigned task | Addressing professor's advice
+| 2 | Meetings        | Had more meetings and specific merging meeting          | None                                               | To make sure we address all of professor's comments
+| 3 |                 |                                                         |                                                    | 
 
 
 
