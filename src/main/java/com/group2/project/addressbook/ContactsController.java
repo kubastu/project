@@ -3,6 +3,7 @@ package com.group2.project.addressbook;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import lombok.extern.log4j.Log4j2;
 /**
  * Author: Marina Ljuboja
  * Main idea: Controller using swagger and java api
- * Description: This is where I have the CRUD operations
+ * Description: This is where I have the CRUD operations and RESTful services
  */
 
 @RestController

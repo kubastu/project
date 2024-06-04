@@ -1,12 +1,12 @@
 /**
  * <b>Demonstrate my knowledge I have acquired from the class
  * <ul>
- * <li>Unit Tests
- * <li>Documentations on features that were not covered in class
- * <li>Repository with additional finders
- * <li>Added unit tests to demonstrate repository working
- * <li>Added additional notes on services for swagger and services unit test using MockMVC
- * <li>Combined SQL with NoSQL
+ * <li> For CRUD operations and SQL I used java persistence api (jpa) and crud repository
+ * <li> Included 3 repositories; jpa, mongo and crud
+ * <li> For logging I used lombok
+ * <li> Added unit tests to demonstrate repository working using JUnit
+ * <li> For RESTful service used lombok
+ * <li> Combined SQL with NoSQL. Used Mongo for NoSQL. Used h2 for SQL.
  * </ul>
  * @author Marina Ljuboja
  */
