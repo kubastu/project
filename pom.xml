@@ -97,6 +97,16 @@
 			<artifactId>javafx-fxml</artifactId>
 			<version>22-ea+16</version>
 		</dependency>
+		<!-- ML: Added for NoSQL using Mongo -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>4.2.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>

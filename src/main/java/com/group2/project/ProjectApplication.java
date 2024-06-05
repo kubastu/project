@@ -29,7 +29,7 @@ public class ProjectApplication extends Application {
 	public static void main(String[] args) {
 		//SpringApplication.run(ProjectApplication.class, args);
 		//runREPL();
-		Application.launch(args);
+		//Application.launch(args);
 	}
 
 	// setting up fxml: https://gist.github.com/Da9el00/f4340927b8ba6941eb7562a3306e93b6

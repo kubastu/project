@@ -25,6 +25,7 @@ public class Contacts {
 
     //had id here but got an error and program wouldn't build
     @Id
+    @GeneratedValue
     private long id;
 
     @Embedded
