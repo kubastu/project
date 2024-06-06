@@ -1,6 +1,6 @@
 package com.group2.project;
 
-import javafx.application.Application;
+//import javafx.application.Application;
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.boot.SpringApplication;
