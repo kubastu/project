@@ -1,12 +1,17 @@
 package com.group2.project.addressbook;
 
 import jakarta.persistence.OneToOne;
+import lombok.*;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
 import jakarta.persistence.Id;
-import lombok.Data;
 
 @Data
-@Document
+//@ToString
+//@EqualsAndHashCode
+//@Getter
+//@RequiredArgsConstructor
+@Document("relation")
 public class Relation {
     enum RelationshipType {
         BUSINESS,
@@ -18,6 +23,12 @@ public class Relation {
     private RelationshipType relationshipType;
 
     @OneToOne
+    @Reference
     private Contacts contacts;
+
+    @Reference Person person;
+
+    @NonNull
+    private RelationshipType type;
 
 }

@@ -27,7 +27,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.group2.project." level="info">
+        <Logger name="com.group2" level="debug">
             <AppenderRef ref="RollingFile" level="info" />
         </Logger>
         <Root level="error">

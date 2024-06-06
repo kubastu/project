@@ -1,11 +1,15 @@
 package com.group2.project;
 
 import javafx.application.Application;
+import org.apache.catalina.Context;
+import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-@Component
+
 @SpringBootApplication
 public class Main
 {
@@ -15,4 +19,7 @@ public class Main
         //ProjectApplication.main(args);
     }
 
+
+
 }
+

@@ -16,13 +16,10 @@ import lombok.Getter;
 
 @Data
 @Embeddable
-//@Entity
-//@Getter
+
 public class Person {
 
-    //@Id
-    //@GeneratedValue
-    //private long id;
+
     private String firstName;
     private String personLastName;
 }

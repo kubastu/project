@@ -1,0 +1,26 @@
+#Be sure to change volumn location
+#start:   docker-compose -f docker-dbonly.yml up -d
+#stop:    docker-compse -f docker-dbonly.yml down
+
+version: '3.8'
+services:
+  postgres:
+    container_name: demo-postgres
+    image: postgres
+    env_file: ./.env
+    volumes:
+      - "$POSTGRES_EXTERNAL_LOC:/var/lib/postgresql/data"
+    restart: always
+    ports:
+      - $POSTGRES_PORT:$POSTGRES_PORT
+    environment:
+      POSTGRES_PASSWORD: $SQL_PASSWORD
+  mongo:
+    container_name: demo-mongo
+    image: mongo
+    env_file: ./.env
+    volumes:
+      - "$MONGO_EXTERNAL_LOC:/data/db"
+    restart: always
+    ports:
+      - $MONGO_PORT:$MONGO_PORT
