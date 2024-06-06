@@ -18,12 +18,12 @@ class ContactsTest {
     @Test
     public void testLombok() {
         Person person = new Person();
-        person.setFirstName("Pat");
-        person.setPersonLastName("Sajak");
+        person.setFirstName("Jane");
+        person.setPersonLastName("Doe");
         Contacts contacts = Contacts.builder().person(person).build();
 
-        String expectedError = "Person=(firstName=Pat, lastName=Sajak)";
-        String expectedNoError = "Passenger(id=0, person=Person(firstName=Pat, lastName=Sajak))";
+        String expectedError = "Person=(firstName=Jane, lastName=Doe)";
+        String expectedNoError = "Passenger(id=0, person=Person(firstName=Jane, lastName=Doe))";
         assertEquals(expectedNoError, contacts.toString());
 
     }
@@ -36,26 +36,19 @@ class ContactsTest {
     @Test
     public void testAddingPassengerAsComposition() {
         var person = new Person();
-        person.setFirstName("Pat");
-        person.setPersonLastName("Sajak");
-        var passenger = Contacts.builder().person(person).build();
+        person.setFirstName("Jane");
+        person.setPersonLastName("Doe");
+        var contacts = Contacts.builder().person(person).build();
 
-        var b4Add = contactsRepo.count();
-        contactsRepo.save(passenger);
+        var beforeAdd = contactsRepo.count();
+        contactsRepo.save(contacts);
         var afterAdd = contactsRepo.count();
 
-        assertEquals(b4Add + 1, afterAdd);
+        assertEquals(beforeAdd + 1, afterAdd);
 
-        var passengerList = contactsRepo.findByPersonLastName("Sajak");
+        var passengerList = contactsRepo.findByPersonLastName("Doe");
         assertEquals(1, passengerList.size());
     }
 
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 }

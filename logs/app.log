@@ -1,2 +1,0 @@
-2024-06-06 13:15:42,508 INFO o.s.b.StartupInfoLogger [restartedMain] Starting Main using Java 21.0.1 with PID 9608 (C:\Users\mljub\OneDrive\Documents\DePaul Grad School\SE 452\project\target\classes started by mljub in C:\Users\mljub\OneDrive\Documents\DePaul Grad School\SE 452\project)
-2024-06-06 13:15:42,521 INFO o.s.b.SpringApplication [restartedMain] The following 2 profiles are active: "user-database", "jwt"

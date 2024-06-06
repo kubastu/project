@@ -25,24 +25,24 @@ import lombok.extern.log4j.Log4j2;
 
 
 import java.util.List;
-
-public class AppointmentController {
-  @Autowired
-  private AppointmentService service;
-
-  @GetMapping
-  public List<Appointment> list() {
-    return service.list();
-  }
-
-  @PostMapping
-  public void save(@RequestBody Appointment appointment) {
-    service.save(appointment);
-  }
-
-  @DeleteMapping
-  public void delete(String code) {
-    service.delete(code);
-  }
-
-}
+//
+//public class AppointmentController {
+//  @Autowired
+//  private AppointmentService service;
+//
+//  @GetMapping
+//  public List<Appointment> list() {
+//    return service.list();
+//  }
+//
+//  @PostMapping
+//  public void save(@RequestBody Appointment appointment) {
+//    service.save(appointment);
+//  }
+//
+//  @DeleteMapping
+//  public void delete(String code) {
+//    service.delete(code);
+//  }
+//
+//}

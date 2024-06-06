@@ -29,6 +29,6 @@ public class Relation {
     @Reference Person person;
 
     @NonNull
-    private RelationshipType type;
+    private Relation relation;
 
 }
