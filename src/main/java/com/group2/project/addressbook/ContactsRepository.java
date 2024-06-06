@@ -8,7 +8,7 @@ import java.util.List;
  * Main idea: Repository using jpa repository as discussed in class
  *
  */
-public interface ContactsRepository extends JpaRepository<Person, Long>{
+public interface ContactsRepository extends JpaRepository<Contacts, Long>{
     List<Contacts> findByPersonLastName(String lastName);
 
     //List<Contacts> findByPersonFirstName(String firstName);

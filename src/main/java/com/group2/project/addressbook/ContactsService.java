@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ContactsService {
     @Autowired
-    public ContactsRepository repo;
+    private ContactsRepository repo;
 
     public List<Contacts> list() {
         log.traceEntry("Entered a list");

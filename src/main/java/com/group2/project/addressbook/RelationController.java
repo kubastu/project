@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/preference")
+@RequestMapping("/api/relation")
 @Tag(name = "Preference", description = "Everything about your Passenger Preference")
 @Log4j2
 public class RelationController {

@@ -26,7 +26,7 @@ import lombok.extern.log4j.Log4j2;
 
 public class ContactsController {
     @Autowired
-    public ContactsService service;
+    private ContactsService service;
 
     @GetMapping
     @Operation(summary = "Adds info to addressbook to database")

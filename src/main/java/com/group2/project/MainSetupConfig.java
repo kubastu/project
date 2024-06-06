@@ -11,11 +11,12 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
 @Configuration
-public class ProjectApplicationSetupConfig {
-    /**
+public class MainSetupConfig {
+/**
      * Here we are using swagger
      * @see <a href="http://localhost:8080/swagger-ui/index.html">Swagger</a>
-     */
+*/
+
     @Bean
     public OpenAPI customOpenAPI(
             @Value("${app.doc.title:Default Title}") String title,
