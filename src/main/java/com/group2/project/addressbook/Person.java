@@ -19,7 +19,6 @@ import lombok.Getter;
 
 public class Person {
 
-
     private String firstName;
     private String personLastName;
 }

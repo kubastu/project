@@ -32,9 +32,9 @@ class ContactsTest {
     @Autowired
     private ContactsRepository contactsRepo;
 
-    @DisplayName("Test adding flights")
+    @DisplayName("Test adding contacts")
     @Test
-    public void testAddingPassengerAsComposition() {
+    public void testAddingContacts() {
         var person = new Person();
         person.setFirstName("Jane");
         person.setPersonLastName("Doe");
@@ -46,7 +46,7 @@ class ContactsTest {
 
         assertEquals(beforeAdd + 1, afterAdd);
 
-        var passengerList = contactsRepo.findByPersonLastName("Doe");
+        var passengerList = contactsRepo.findByPersonFirstName("Jane");
         assertEquals(1, passengerList.size());
     }
 

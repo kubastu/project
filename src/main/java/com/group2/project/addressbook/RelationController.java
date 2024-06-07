@@ -12,14 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/relation")
-@Tag(name = "Preference", description = "Everything about your Passenger Preference")
+@Tag(name = "Relation", description = "Info about Relation to Contact")
 @Log4j2
 public class RelationController {
     @Autowired
     private RelationService service;
 
     @GetMapping
-    @Operation(summary = "Returns all the Passenger Preference in the database")
+    @Operation(summary = "Gives the relation to the contact for all contacts")
     @ApiResponse(responseCode = "200", description = "valid response",
             content = {@Content(mediaType="application/json", schema=@Schema(implementation=Relation.class))})
     public List<Relation> list() {
@@ -27,7 +27,7 @@ public class RelationController {
     }
 
     @PostMapping
-    @Operation(summary = "Save the Passenger and returns the Passenger id")
+    @Operation(summary = "Save the Contact and returns contact id")
     public String save(Relation relation) {
         log.traceEntry("enter save", relation);
         service.save(relation);
@@ -36,7 +36,7 @@ public class RelationController {
     }
 
     @DeleteMapping
-    @Operation(summary = "Delete the Passenger Preference")
+    @Operation(summary = "Deletes the relation to the contact")
     public void delete(String id) {
         log.traceEntry("Enter delete", id);
         service.delete(id);

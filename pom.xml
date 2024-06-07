@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.group2</groupId>
-	<artifactId>project</artifactId>
+	<artifactId>nosql-starter-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>project</name>
-	<description>Project for Group 2</description>
+	<name>rdms-starter-demo</name>
+	<description>NoSQL Database Starter demo</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-		<!--<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-controls</artifactId>
-			<version>17.0.1</version>
-		</dependency>-->
+		<!-- exclude default SFL4j logging to switch to log4j -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -36,57 +33,111 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- ML: Added for non persistence database things -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+			<!--			<scope>provided</scope>-->
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.33</version>
 		</dependency>
-		<!-- ML: Added for non persistence database things -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
+		<!-- ML: Added for NoSQL using Mongo -->
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.2.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>3.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>4.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations-jakarta</artifactId>
+			<version>2.2.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>6.1.5</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>6.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-catalina</artifactId>
+			<version>7.0.50</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
@@ -97,16 +148,8 @@
 			<artifactId>javafx-fxml</artifactId>
 			<version>22-ea+16</version>
 		</dependency>
-		<!-- ML: Added for NoSQL using Mongo -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
-			<version>4.2.4</version>
-		</dependency>
+
+
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-assembly-plugin</artifactId>
@@ -117,11 +160,9 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version> <!-- Or the latest version -->
 		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-catalina</artifactId>
-			<version>7.0.50</version>
-		</dependency>
+
+
+
 	</dependencies>
 
 	<build>
@@ -138,130 +179,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.openjfx</groupId>
-				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.1</version>
-<!--				<configuration>-->
-<!--					<mainClass>HelloFX</mainClass>-->
-<!--				</configuration>-->
-			</plugin>
 		</plugins>
 	</build>
-
 </project>
 
-
-<!--		<?xml version="1.0" encoding="UTF-8"?>&ndash;&gt;-->
-		<!--<project xmlns="http://maven.apache.org/POM/4.0.0"-->
-		<!--		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-		<!--		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">-->
-		<!--	<modelVersion>4.0.0</modelVersion>-->
-		<!--	<parent>-->
-		<!--		<groupId>org.springframework.boot</groupId>-->
-		<!--		<artifactId>spring-boot-starter-parent</artifactId>-->
-		<!--		<version>3.2.4</version>-->
-		<!--		<relativePath /> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-		<!--	</parent>-->
-		<!--	<groupId>com.group2</groupId>-->
-		<!--	<artifactId>nosql-starter-demo</artifactId>-->
-		<!--	<version>0.0.1-SNAPSHOT</version>-->
-		<!--	<name>rdms-starter-demo</name>-->
-		<!--	<description>NoSQL Database Starter demo</description>-->
-		<!--	<properties>-->
-		<!--		<java.version>21</java.version>-->
-		<!--	</properties>-->
-		<!--	<dependencies>-->
-		<!--		&lt;!&ndash; exclude default SFL4j loging to switch to log4j &ndash;&gt;-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-starter</artifactId>-->
-		<!--			<exclusions>-->
-		<!--				<exclusion>-->
-		<!--					<groupId>org.springframework.boot</groupId>-->
-		<!--					<artifactId>spring-boot-starter-logging</artifactId>-->
-		<!--				</exclusion>-->
-		<!--			</exclusions>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-starter-log4j2</artifactId>-->
-		<!--		</dependency>-->
-
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-starter-data-redis</artifactId>-->
-		<!--		</dependency>-->
-
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-starter-test</artifactId>-->
-		<!--			<scope>test</scope>-->
-		<!--		</dependency>-->
-
-		<!--		<dependency>-->
-		<!--			<groupId>org.projectlombok</groupId>-->
-		<!--			<artifactId>lombok</artifactId>-->
-		<!--			<optional>true</optional>-->
-		<!--		</dependency>-->
-
-
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-starter-validation</artifactId>-->
-		<!--		</dependency>-->
-
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.data</groupId>-->
-		<!--			<artifactId>spring-data-jpa</artifactId>-->
-		<!--			<version>3.2.4</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>io.swagger.core.v3</groupId>-->
-		<!--			<artifactId>swagger-annotations-jakarta</artifactId>-->
-		<!--			<version>2.2.15</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework</groupId>-->
-		<!--			<artifactId>spring-web</artifactId>-->
-		<!--			<version>6.1.5</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>jakarta.persistence</groupId>-->
-		<!--			<artifactId>jakarta.persistence-api</artifactId>-->
-		<!--			<version>3.1.0</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework</groupId>-->
-		<!--			<artifactId>spring-context</artifactId>-->
-		<!--			<version>6.1.5</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.apache.tomcat</groupId>-->
-		<!--			<artifactId>tomcat-catalina</artifactId>-->
-		<!--			<version>7.0.50</version>-->
-		<!--		</dependency>-->
-		<!--	</dependencies>-->
-
-		<!--	<build>-->
-		<!--		<plugins>-->
-		<!--			<plugin>-->
-		<!--				<groupId>org.springframework.boot</groupId>-->
-		<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-		<!--				<configuration>-->
-		<!--					<excludes>-->
-		<!--						<exclude>-->
-		<!--							<groupId>org.projectlombok</groupId>-->
-		<!--							<artifactId>lombok</artifactId>-->
-		<!--						</exclude>-->
-		<!--					</excludes>-->
-		<!--				</configuration>-->
-		<!--			</plugin>-->
-		<!--		</plugins>-->
-		<!--	</build>-->
-
-		<!--</project>

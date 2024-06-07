@@ -1,7 +1,6 @@
 package com.group2.project.addressbook;
 
 import jakarta.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
