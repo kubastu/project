@@ -1,5 +1,5 @@
-//package com.group2.project.CalendarActivity;
-//
+package com.group2.project.CalendarActivity;
+
 //import com.group2.project.calendarobjects.CalendarObject;
 //import javafx.beans.value.ChangeListener;
 //import javafx.beans.value.ObservableValue;

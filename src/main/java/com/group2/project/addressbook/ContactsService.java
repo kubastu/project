@@ -37,10 +37,10 @@ public class ContactsService {
         log.traceExit("Exit deleted");
     }
 
-    public long count(long id) {
-        log.traceEntry("Enter counted", id);
-        repo.countById(id);
-        log.traceExit("Exit saved", id);
-        return repo.countById(id);
-    }
+//    public long count(long id) {
+//        log.traceEntry("Enter counted", id);
+//        repo.countById(id);
+//        log.traceExit("Exit saved", id);
+//        return repo.countById(id);
+//    }
 }
