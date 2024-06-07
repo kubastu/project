@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.group2</groupId>
-	<artifactId>nosql-starter-demo</artifactId>
+	<artifactId>project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rdms-starter-demo</name>
-	<description>NoSQL Database Starter demo</description>
+	<name>calendar app</name>
+	<description>calendar app</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
@@ -181,12 +181,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
-
-
-
-
-
 
 

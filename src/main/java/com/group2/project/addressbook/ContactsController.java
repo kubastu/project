@@ -52,13 +52,13 @@ public class ContactsController {
         log.traceExit("Exit delete");
     }
 
-    @RequestMapping
-    @Operation(summary = "Count the person")
-    public long getNumberOfContacts(long id) {
-        log.traceEntry("Enter counted", id);
-        service.count(id);
-        log.traceExit("Exit counted");
-        return service.count(id);
-    }
+//    @RequestMapping
+//    @Operation(summary = "Count the person")
+//    public long getNumberOfContacts(long id) {
+//        log.traceEntry("Enter counted", id);
+//        service.count(id);
+//        log.traceExit("Exit counted");
+//        return service.count(id);
+//    }
 
 }

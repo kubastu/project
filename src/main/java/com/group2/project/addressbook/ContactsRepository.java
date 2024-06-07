@@ -16,6 +16,6 @@ public interface ContactsRepository extends JpaRepository<Contacts, Long>{
 
     //public long countById(Long Id);
 
-    //List<Contacts> findByPersonFirstName(String firstName);
+    List<Contacts> findByPersonFirstName(String firstName);
 
 }

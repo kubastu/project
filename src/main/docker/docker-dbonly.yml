@@ -1,6 +1,6 @@
-#Be sure to change volumn location
-#start:   docker-compose -f docker-dbonly.yml up -d
-#stop:    docker-compse -f docker-dbonly.yml down
+# We are using the same commands as discussed in lecture in the terminal
+# start:   docker-compose -f docker-dbonly.yml up -d
+# stop:    docker-compse -f docker-dbonly.yml down
 
 version: '3.8'
 services:
@@ -10,6 +10,7 @@ services:
     env_file: ./.env
     volumes:
       - "$POSTGRES_EXTERNAL_LOC:/var/lib/postgresql/data"
+      #- ../resources/data.sql:/docker-entrypoint-initdb.d/data.sql
     restart: always
     ports:
       - $POSTGRES_PORT:$POSTGRES_PORT

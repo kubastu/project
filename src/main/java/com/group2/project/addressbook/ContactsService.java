@@ -37,11 +37,12 @@ public class ContactsService {
         log.traceExit("Exit deleted");
     }
 
-    public long count(long id) {
-        log.traceEntry("Enter counted", id);
-        //repo.countById(id);
-        log.traceExit("Exit saved", id);
-        //return repo.countById(id);
-        return(0); // todo fix this right here
-    }
+
+//    public long count(long id) {
+//        log.traceEntry("Enter counted", id);
+//        repo.countById(id);
+//        log.traceExit("Exit saved", id);
+//        return repo.countById(id);
+//    }
+
 }
