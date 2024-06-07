@@ -17,23 +17,31 @@ public class ContactsService {
     @Autowired
     private ContactsRepository repo;
 
-    public List<Person> list() {
+    public List<Contacts> list() {
         log.traceEntry("Entered a list");
         var returnval = repo.findAll();
         log.traceExit("Exited from list", returnval);
         return repo.findAll();
     }
 
-    public Person save(Person person) {
-        log.traceEntry("Enter saved", person);
-        repo.save(person);
-        log.traceExit("Exit saved", person);
-        return person;
+    public Contacts save(Contacts contacts) {
+        log.traceEntry("Enter saved", contacts);
+        repo.save(contacts);
+        log.traceExit("Exit saved", contacts);
+        return contacts;
     }
 
     public void delete(long id) {
         log.traceEntry("Enter deleted", id);
         repo.deleteById(id);
         log.traceExit("Exit deleted");
+    }
+
+    public long count(long id) {
+        log.traceEntry("Enter counted", id);
+        //repo.countById(id);
+        log.traceExit("Exit saved", id);
+        //return repo.countById(id);
+        return(0); // todo fix this right here
     }
 }
