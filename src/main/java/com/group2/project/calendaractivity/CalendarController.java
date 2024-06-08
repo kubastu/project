@@ -1,12 +1,17 @@
-package com.group2.project.CalendarActivity;
+package com.group2.project.calendaractivity;
 
 import com.group2.project.calendarobjects.CalendarObject;
+import com.group2.project.calendarobjects.CalendarType;
+import com.group2.project.calendarobjects.Event;
+import com.group2.project.calendarobjects.Meeting;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
@@ -43,6 +48,9 @@ public class CalendarController implements Initializable
     private FlowPane calendar;
 
     @FXML
+    private ComboBox<String> comboBox;
+
+    @FXML
     private ListView<String> eventsListView;
 
     // holds mappings for each month to
@@ -71,6 +79,8 @@ public class CalendarController implements Initializable
         spacingV = calendar.getVgap();
         rectangleWidth = (calendarWidth/7) - strokeWidth - spacingH;
         rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
+
+        comboBox.setItems(FXCollections.observableArrayList("Calendar Object", "Event", "Meeting"));
 
         drawCalendar();
 
@@ -177,9 +187,6 @@ public class CalendarController implements Initializable
                         }
 
                         stackPane.setOnMouseClicked(mouseEvent -> {
-                            // todo fix this
-                            //selectedDate = focusedDate;
-                            //System.out.println("CLICKED" + focusedDate.toString());
                             System.out.println("Clicked Date: " + currentDate);
                             selectedDay = currentDate;
                             selected = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), selectedDay, 0, 0, 0, 0, focusedDate.getZone());
@@ -190,7 +197,8 @@ public class CalendarController implements Initializable
 //                            rectangle.setStrokeWidth(strokeWidth + 0.5);
                         });
                     }
-                    if(selectedDay == currentDate){
+                    if(selected != null && selected.getDayOfMonth() == currentDate && selected.getYear() == focusedDate.getYear() && selected.getMonth() == focusedDate.getMonth())
+                    {
                         rectangle.setStroke(Color.RED);
                         rectangle.setStrokeWidth(strokeWidth + 0.5);
                     }
@@ -220,7 +228,9 @@ public class CalendarController implements Initializable
 //                });
                 break;
             }
-            Text text = new Text(calendarActivities.get(k).getClientName() + ", " + calendarActivities.get(k).getDate().toLocalTime());
+            // todo : change time with this + make sure title cannot be too long
+            //Text text = new Text(calendarActivities.get(k).getCalendarObject().getTitle() + ", " + calendarActivities.get(k).getDate().toLocalTime());
+            Text text = new Text(calendarActivities.get(k).getCalendarObject().getTitle());
             calendarActivityBox.getChildren().add(text);
 //            text.setOnMouseClicked(mouseEvent -> {
 //                //On Text clicked
@@ -273,8 +283,14 @@ public class CalendarController implements Initializable
     @FXML
     private void submitCalendarObject(ActionEvent event)
     {
+        if(!isValidCalendarSubmission())
+        {
+            return;
+        }
+
         String title = titleField.getText();
         String desc = descField.getText();
+        CalendarType type = getTypeFromCombo();
         titleField.setText("");
         descField.setText("");
 
@@ -282,7 +298,45 @@ public class CalendarController implements Initializable
         ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
 
 //        calendarActivities.add(new CalendarActivity(time, title, 111111));
-        addToMap(new CalendarActivity(time, title, 111111));
+        //addToMap(new CalendarActivity(time, title, 111111)); //todo somehow add TYPE, and description
+
+        switch (type)
+        {
+            case CALENDAR_OBJECT -> addToMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
+            case EVENT -> addToMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, "12:00"))); //todo change this
+            case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, "12:00", "chicago"))); //todo change this
+
+        }
+
+    }
+
+    private boolean isValidCalendarSubmission()
+    {
+        if(titleField.getText().isEmpty())
+        {
+            return false;
+        }
+        else if(descField.getText().isEmpty())
+        {
+            return false;
+        }
+        else if(comboBox.getValue() == null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private CalendarType getTypeFromCombo()
+    {
+        switch(comboBox.getValue())
+        {
+            case "Calendar Object": return CalendarType.CALENDAR_OBJECT;
+            case "Event": return CalendarType.EVENT;
+            case "Meeting": return CalendarType.MEETING;
+            case null, default: return CalendarType.CALENDAR_OBJECT;
+        }
     }
 
     private void addToMap(CalendarActivity toAdd)
