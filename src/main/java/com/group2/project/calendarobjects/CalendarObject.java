@@ -3,6 +3,7 @@ package com.group2.project.calendarobjects;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -43,4 +44,11 @@ public class CalendarObject
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "CalendarObject{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

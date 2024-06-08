@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -27,5 +28,14 @@ public class Event extends CalendarObject
     public Event(ZonedDateTime date, String title, String description, String time) {
         super(date, title, description);
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "title=" + getTitle() +
+                "description=" + getDescription() +
+                "time='" + time + '\'' +
+                '}';
     }
 }
