@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
@@ -17,7 +18,13 @@ public class Event extends CalendarObject
     @Column(name = "TIME")
     private String time;
 
-    public Event(Date date, String title, String description, String time) {
+    // JZ: "lombok requires base constructor in base class"
+    public Event()
+    {
+        super();
+    }
+
+    public Event(ZonedDateTime date, String title, String description, String time) {
         super(date, title, description);
         this.time = time;
     }

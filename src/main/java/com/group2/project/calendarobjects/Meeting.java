@@ -5,12 +5,13 @@ import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
 @Entity
 @Getter
-public class Meeting extends CalendarObject
+public class Meeting extends Event
 {
 
     // todo : Add addressbook implementation
@@ -19,8 +20,8 @@ public class Meeting extends CalendarObject
     @Column(name = "LOCATION")
     private String location;
 
-    public Meeting(Date date, String title, String description, String location) {
-        super(date, title, description);
+    public Meeting(ZonedDateTime date, String title, String description, String time, String location) {
+        super(date, title, description, time);
         this.location = location;
     }
 }

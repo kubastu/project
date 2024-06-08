@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 // JZ: this class defines the structure for a base calendar 'event' object
@@ -20,8 +21,9 @@ public class CalendarObject
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    // changed this to work with FX:
     @Column(name = "DATE")
-    private Date date;
+    private ZonedDateTime date;
 
     @Column(name = "TITLE")
     private String title;
@@ -35,7 +37,7 @@ public class CalendarObject
 
     }
 
-    public CalendarObject(Date date, String title, String description) {
+    public CalendarObject(ZonedDateTime date, String title, String description) {
         this.date = date;
         this.title = title;
         this.description = description;
