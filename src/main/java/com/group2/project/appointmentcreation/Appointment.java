@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
@@ -28,7 +29,7 @@ public class Appointment extends CalendarObject {
   private String location;
   private Date time;
 
-  public Appointment(Date date, String title, String description, String location){
+  public Appointment(ZonedDateTime date, String title, String description, String location){
     super(date, title, description);
     this.location= location;
   }
