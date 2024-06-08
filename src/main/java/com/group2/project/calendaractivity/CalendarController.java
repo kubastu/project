@@ -42,7 +42,7 @@ public class CalendarController implements Initializable
     private Text yearText, monthText, selectedText, eventsText;
 
     @FXML
-    private TextField titleField, descField;
+    private TextField titleField, descField, locText, timeText;
 
     @FXML
     private FlowPane calendar;
@@ -52,6 +52,12 @@ public class CalendarController implements Initializable
 
     @FXML
     private ListView<String> eventsListView;
+
+    // https://www.youtube.com/watch?v=wMfQp_a9tBM&ab_channel=GenuineCoder
+//    @FXML
+//    private JFXTimePicker timePicker;
+
+
 
     // holds mappings for each month to
     //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
@@ -81,6 +87,28 @@ public class CalendarController implements Initializable
         rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
 
         comboBox.setItems(FXCollections.observableArrayList("Calendar Object", "Event", "Meeting"));
+
+        comboBox.getSelectionModel().selectedItemProperty().addListener((opts, oldVal, newVal) -> {
+            System.out.println(oldVal + " -> " + newVal);
+            switch(newVal)
+            {
+                case "Calendar Object":
+                    locText.setVisible(false);
+                    timeText.setVisible(false);
+                    break;
+                case "Event":
+                    locText.setVisible(false);
+                    timeText.setVisible(true);
+                    break;
+                case "Meeting":
+                    locText.setVisible(true);
+                    timeText.setVisible(true);
+                    break;
+            }
+        });
+
+        locText.setVisible(false);
+        timeText.setVisible(false);
 
         drawCalendar();
 
@@ -230,7 +258,14 @@ public class CalendarController implements Initializable
             }
             // todo : change time with this + make sure title cannot be too long
             //Text text = new Text(calendarActivities.get(k).getCalendarObject().getTitle() + ", " + calendarActivities.get(k).getDate().toLocalTime());
-            Text text = new Text(calendarActivities.get(k).getCalendarObject().getTitle());
+            String currTitle = calendarActivities.get(k).getCalendarObject().getTitle();
+            String usedTitle = currTitle;
+            if(currTitle.length() > 12)
+            {
+                usedTitle = currTitle.substring(0, 9) + "...";
+            }
+
+            Text text = new Text(usedTitle);
             calendarActivityBox.getChildren().add(text);
 //            text.setOnMouseClicked(mouseEvent -> {
 //                //On Text clicked
@@ -288,23 +323,31 @@ public class CalendarController implements Initializable
             return;
         }
 
+        if(selected == null)
+        {
+            System.out.println("Must select a date to mark for calendar object");
+            return;
+        }
+
         String title = titleField.getText();
         String desc = descField.getText();
+        String timeString = timeText.getText();
+        String location = locText.getText();
         CalendarType type = getTypeFromCombo();
+
         titleField.setText("");
         descField.setText("");
+        locText.setText("");
+        timeText.setText("");
 
         // change time depending on calendarobject type
         ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
 
-//        calendarActivities.add(new CalendarActivity(time, title, 111111));
-        //addToMap(new CalendarActivity(time, title, 111111)); //todo somehow add TYPE, and description
-
         switch (type)
         {
             case CALENDAR_OBJECT -> addToMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
-            case EVENT -> addToMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, "12:00"))); //todo change this
-            case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, "12:00", "chicago"))); //todo change this
+            case EVENT -> addToMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, timeString)));
+            case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
 
         }
 
@@ -314,14 +357,61 @@ public class CalendarController implements Initializable
     {
         if(titleField.getText().isEmpty())
         {
+            System.out.println("Not valid title text");
             return false;
         }
         else if(descField.getText().isEmpty())
         {
+            System.out.println("Not valid description text");
             return false;
         }
         else if(comboBox.getValue() == null)
         {
+            System.out.println("Not valid calendar object type");
+            return false;
+        }
+        else if((comboBox.getValue().equals("Event") || comboBox.getValue().equals("Meeting")) && !isValidTimeSubmission())
+        {
+            System.out.println("Not valid time submission");
+            return false;
+        }
+        else if(comboBox.getValue().equals("Meeting") && locText.getText().isEmpty())
+        {
+            System.out.println("Not valid location text");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidTimeSubmission()
+    {
+        String timeStamp = timeText.getText();
+
+        if(timeStamp == null || timeStamp.length() != 5)
+        {
+            return false;
+        }
+        else if(!timeStamp.substring(2, 3).equals(":"))
+        {
+            return false;
+        }
+        String hours = timeStamp.substring(0, 2);
+        String mins = timeStamp.substring(3, 5);
+        try {
+            int parsedH = Integer.parseInt(hours);
+            int parsedM = Integer.parseInt(mins);
+
+            if(parsedH < 0 || parsedH > 23)
+            {
+                return false;
+            }
+            else if(parsedM < 0 || parsedM > 59)
+            {
+                return false;
+            }
+
+        } catch(NumberFormatException e) {
             return false;
         }
 
