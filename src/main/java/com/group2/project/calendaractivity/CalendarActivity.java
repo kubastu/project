@@ -53,13 +53,11 @@ public class CalendarActivity
 
     }
 
-
-
     @Override
     public String toString() {
         return(type + " : {" +
                 calendarObject.toString() +
-                '}'
+                "}"
         );
     }
 
