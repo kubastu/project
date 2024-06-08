@@ -1,6 +1,9 @@
 # We are using the same commands as discussed in lecture in the terminal
 # start:   docker-compose -f docker-dbonly.yml up -d
-# stop:    docker-compse -f docker-dbonly.yml down
+# create volume:   docker volume create calendar-db-postgres
+# create volume:   docker volume create calendar-db-mongo
+# stop:    docker-compose -f docker-dbonly.yml down
+
 
 version: '3.8'
 services:
@@ -9,8 +12,7 @@ services:
     image: postgres
     env_file: ./.env
     volumes:
-      - "$POSTGRES_EXTERNAL_LOC:/var/lib/postgresql/data"
-      #- ../resources/data.sql:/docker-entrypoint-initdb.d/data.sql
+      - calendar-db-postgres:/var/lib/postgresql/data
     restart: always
     ports:
       - $POSTGRES_PORT:$POSTGRES_PORT
@@ -21,7 +23,7 @@ services:
     image: mongo
     env_file: ./.env
     volumes:
-      - "$MONGO_EXTERNAL_LOC:/data/db"
+      - calendar-db-mongo:/data/db
     restart: always
     ports:
       - $MONGO_PORT:$MONGO_PORT
