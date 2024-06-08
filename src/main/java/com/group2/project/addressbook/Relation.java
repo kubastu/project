@@ -13,14 +13,10 @@ import jakarta.persistence.Id;
 //@RequiredArgsConstructor
 @Document("relation")
 public class Relation {
-    enum RelationshipType {
-        BUSINESS,
-        FAMILY,
-        FRIEND
-    }
+
     @Id
     private String id;
-    private RelationshipType relationshipType;
+    private String relationshipType;
 
     @OneToOne
     @Reference
@@ -28,7 +24,5 @@ public class Relation {
 
     @Reference Person person;
 
-    @NonNull
-    private Relation relation;
 
 }

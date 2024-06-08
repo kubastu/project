@@ -11,6 +11,7 @@ import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Scanner;
 
+
+@ComponentScan(basePackages = {"com.group2.project.ContactsRepository","com.group2.project.ContactsService"})
 @SpringBootApplication
 public class ProjectApplication extends Application {
 

@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Contacts {
 
-    //had id here but got an error and program wouldn't build
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
