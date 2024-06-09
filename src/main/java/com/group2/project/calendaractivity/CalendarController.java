@@ -4,6 +4,7 @@ import com.group2.project.calendarobjects.CalendarObject;
 import com.group2.project.calendarobjects.CalendarType;
 import com.group2.project.calendarobjects.Event;
 import com.group2.project.calendarobjects.Meeting;
+import com.group2.project.jsonparser.RawJSONParser;
 import com.group2.project.weather.Weather;
 import com.group2.project.weather.WeatherData;
 import javafx.beans.value.ChangeListener;
@@ -115,6 +116,10 @@ public class CalendarController implements Initializable
 
         drawCalendar();
 
+        // put threaded-jsonreader BELOW calendar because it is too fast...
+        Thread jsonCaller = new Thread(() -> RawJSONParser.readJSON(this));
+        jsonCaller.start();
+
         // from: https://www.youtube.com/watch?v=Pqfd4hoi5cc&ab_channel=BroCode
         eventsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -135,6 +140,24 @@ public class CalendarController implements Initializable
         } else {
             System.out.println("Weather data could not be retrieved.");
         }
+    }
+
+    public void acceptMap(Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> resultMap)
+    {
+        if(resultMap == null || resultMap.isEmpty())
+        {
+            System.out.println("Accepted Results are null");
+            return;
+        }
+
+        //System.out.println("Accepted: " + resultMap.size() + " years");
+
+        calendarEventMap.clear();
+        calendarEventMap.putAll(resultMap);
+
+        calendar.getChildren().clear();
+        drawCalendar();
+
     }
 
     private void respringCalendar()
