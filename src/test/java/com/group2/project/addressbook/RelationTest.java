@@ -1,27 +1,31 @@
 package com.group2.project.addressbook;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import static com.group2.project.addressbook.Relation.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//@DataJpaTest
+@DataJpaTest
 @ActiveProfiles("test")
-@SpringBootTest
+@DataMongoTest
 public class RelationTest {
     @Autowired
     private RelationRepository relationRepo;
+
+    @BeforeEach
+    void setupDb() {
+        relationRepo.deleteAll();
+    }
 
     @DisplayName("Test adding relations")
     @Test
     public void testAddingRelation() {
         var relation = new Relation();
         relation.setRelationshipType("Business");
-
 
         var beforeAdd = relationRepo.count();
         relationRepo.save(relation);
@@ -32,7 +36,7 @@ public class RelationTest {
         var relationList = relationRepo.findByRelationshipType("Business");
         assertEquals(1, relationList.size());
 
-        relationRepo.delete(relation);
+
     }
 
     @DisplayName("Test deleting relations")
