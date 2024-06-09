@@ -5,6 +5,7 @@ import com.group2.project.calendarobjects.CalendarType;
 import com.group2.project.calendarobjects.Event;
 import com.group2.project.calendarobjects.Meeting;
 import com.group2.project.jsonmanipulator.RawJSONParser;
+import com.group2.project.jsonmanipulator.RawJSONWriter;
 import com.group2.project.weather.Weather;
 import com.group2.project.weather.WeatherData;
 import javafx.beans.value.ChangeListener;
@@ -501,6 +502,8 @@ public class CalendarController implements Initializable
         calendar.getChildren().clear();
         drawCalendar();
 
+        writeToJSON();
+
     }
 
     private void onUnFocusEditing()
@@ -606,6 +609,8 @@ public class CalendarController implements Initializable
         calendar.getChildren().clear();
         drawCalendar();
 
+        writeToJSON();
+
     }
 
     private void addToMap(CalendarActivity toAdd)
@@ -647,6 +652,9 @@ public class CalendarController implements Initializable
         calendar.getChildren().clear();
         drawCalendar();
         //respringListView();
+
+        writeToJSON();
+
     }
 
     private List<CalendarActivity> getEventsForDate()
@@ -664,6 +672,12 @@ public class CalendarController implements Initializable
             return calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth());
         }
         return null;
+    }
+
+    private void writeToJSON()
+    {
+        Thread writeThread = new Thread(() -> RawJSONWriter.writeJSON(calendarEventMap));
+        writeThread.start();
     }
 
     // update ui functions below:
