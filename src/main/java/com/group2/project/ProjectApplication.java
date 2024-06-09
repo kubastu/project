@@ -43,6 +43,11 @@ public class ProjectApplication extends Application {
 		springContext = SpringApplication.run(ProjectApplication.class);
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/calendarActivity.fxml"));
 		rootNode = fxmlLoader.load();
+
+		Thread jsonLoader = new Thread(() -> {
+
+		});
+		jsonLoader.start();
 	}
 
 	// JZ: Launches the application in GUI mode:
