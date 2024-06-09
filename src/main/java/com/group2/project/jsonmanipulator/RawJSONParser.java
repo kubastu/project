@@ -26,7 +26,7 @@ public class RawJSONParser
     public static void readJSON(CalendarController calendarController)
     {
         try {
-            //todo what happens if file is null?
+            // todo what happens if file is null?
             //InputStream is = JSONReader.class.getResourceAsStream("src/main/docker/data-postgres/data-postgres.json");
             File jsonFile = new File(jsonDir);
 
