@@ -1,4 +1,4 @@
-package com.group2.project.jsonparser;
+package com.group2.project.jsonmanipulator;
 
 import com.group2.project.calendaractivity.CalendarActivity;
 import com.group2.project.calendaractivity.CalendarController;
@@ -21,11 +21,14 @@ import java.util.Map;
 public class RawJSONParser
 {
 
+    private final static String jsonDir = "src/main/docker/data-postgres/data-postgres.json";
+
     public static void readJSON(CalendarController calendarController)
     {
         try {
+            //todo what happens if file is null?
             //InputStream is = JSONReader.class.getResourceAsStream("src/main/docker/data-postgres/data-postgres.json");
-            File jsonFile = new File("src/main/docker/data-postgres/data-postgres.json");
+            File jsonFile = new File(jsonDir);
 
             BufferedReader reader = new BufferedReader(new FileReader(jsonFile));
 
