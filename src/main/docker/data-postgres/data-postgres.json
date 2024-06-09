@@ -1,3 +1,35 @@
-{
-  "test" : "ok"
-}
+[
+  {
+    "year" : "2024",
+    "months": [
+      {
+        "month" : "06",
+        "days": [
+          {
+            "day" : "10",
+            "events" : [
+              {
+                "type": "CalendarObject",
+                "title": "CalObj",
+                "desc": "CalDesc"
+              },
+              {
+                "type": "Event",
+                "title": "EventObj",
+                "desc": "EveDesc",
+                "time": "13:49"
+              },
+              {
+                "type": "Meeting",
+                "title": "MeetingObj",
+                "desc": "MeetDesc",
+                "time": "11:59",
+                "loc": "Chicago"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
