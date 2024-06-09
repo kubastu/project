@@ -2,7 +2,6 @@ package com.group2.project;
 
 import com.group2.project.calendarobjects.CalendarObject;
 import com.group2.project.calendarobjects.Event;
-import com.group2.project.jsonparser.JSONReader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -46,7 +45,7 @@ public class ProjectApplication extends Application {
 		rootNode = fxmlLoader.load();
 
 		Thread jsonLoader = new Thread(() -> {
-			JSONReader.openJSON();
+
 		});
 		jsonLoader.start();
 	}
