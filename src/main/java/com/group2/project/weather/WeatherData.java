@@ -32,6 +32,11 @@ public class WeatherData {
     return time;
   }
 
+  public String getFormattedTime()
+  {
+    return formatTime(getTime());
+  }
+
   public double getTemperature() {
     return temperature;
   }
@@ -42,6 +47,12 @@ public class WeatherData {
 
   public double getMinTemperature() {
     return minTemperature;
+  }
+
+  public double convertTempToFahrenheit(double celsius)
+  {
+      double fahrenheit = (celsius * 9 / 5) + 32;
+      return(Math.round(fahrenheit * 100.0) / 100.0);
   }
 
   public String getSunrise() {
