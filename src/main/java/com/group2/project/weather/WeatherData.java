@@ -1,4 +1,4 @@
-package com.group2.project.Weather;
+package com.group2.project.weather;
 
 public class WeatherData {
   private String time;

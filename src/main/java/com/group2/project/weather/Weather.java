@@ -1,4 +1,4 @@
-package com.group2.project.Weather;
+package com.group2.project.weather;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;

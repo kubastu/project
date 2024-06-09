@@ -11,4 +11,4 @@
  * </ul>
  * @author Benito Ohara
  **/
-package com.group2.project.Weather;
+package com.group2.project.weather;
