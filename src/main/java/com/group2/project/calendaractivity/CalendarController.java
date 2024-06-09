@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import javax.swing.*;
 import java.util.*;
 
 public class CalendarController implements Initializable
@@ -52,12 +53,6 @@ public class CalendarController implements Initializable
 
     @FXML
     private ListView<String> eventsListView;
-
-    // https://www.youtube.com/watch?v=wMfQp_a9tBM&ab_channel=GenuineCoder
-//    @FXML
-//    private JFXTimePicker timePicker;
-
-
 
     // holds mappings for each month to
     //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
@@ -87,6 +82,7 @@ public class CalendarController implements Initializable
         rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
 
         comboBox.setItems(FXCollections.observableArrayList("Calendar Object", "Event", "Meeting"));
+        comboBox.getSelectionModel().selectFirst();
 
         comboBox.getSelectionModel().selectedItemProperty().addListener((opts, oldVal, newVal) -> {
             System.out.println(oldVal + " -> " + newVal);
@@ -118,7 +114,7 @@ public class CalendarController implements Initializable
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 // will handle whenever user clicks on a different element in list view
                 String current = eventsListView.getSelectionModel().getSelectedItem();
-                System.out.println(current);
+                //System.out.println(current);
             }
         });
     }
@@ -209,7 +205,7 @@ public class CalendarController implements Initializable
                         if(calendarActivityMap != null)
                         {
                             List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
-                            if(calendarActivities != null){
+                            if(calendarActivities != null && calendarActivities.size() > 0){
                                 createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
                             }
                         }
@@ -350,6 +346,40 @@ public class CalendarController implements Initializable
             case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
 
         }
+
+    }
+
+    @FXML
+    private void editSelectedObject(ActionEvent event)
+    {
+        if(selected == null || eventsListView.getSelectionModel().getSelectedIndex() == -1)
+        {
+            return;
+        }
+
+        List<CalendarActivity> forSelected = getEventsForDate();
+        int index = eventsListView.getSelectionModel().getSelectedIndex();
+
+        System.out.println(forSelected.get(index));
+        System.out.println(eventsListView.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    private void deleteSelectedObject(ActionEvent event)
+    {
+        if(selected == null || eventsListView.getSelectionModel().getSelectedIndex() == -1)
+        {
+            return;
+        }
+
+        List<CalendarActivity> forSelected = getEventsForDate();
+        int index = eventsListView.getSelectionModel().getSelectedIndex();
+
+        //System.out.println(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).remove(index));
+        //System.out.println(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()));
+
+        calendar.getChildren().clear();
+        drawCalendar();
 
     }
 
