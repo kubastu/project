@@ -1,4 +1,4 @@
-package com.group2.project.Weather;
+package com.group2.project.weather;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

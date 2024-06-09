@@ -1,4 +1,4 @@
-package com.group2.project.Weather;
+package com.group2.project.weather;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -13,7 +13,7 @@ public class Weather {
   private static final double CHICAGO_LATITUDE = 41.85;
   private static final double CHICAGO_LONGITUDE = -87.65;
 
-  public WeatherData getWeatherData() {
+  public static WeatherData getWeatherData() {
     try {
       return fetchWeatherData(CHICAGO_LATITUDE, CHICAGO_LONGITUDE);
     } catch (Exception e) {
@@ -22,7 +22,7 @@ public class Weather {
     return null;
   }
 
-  private WeatherData fetchWeatherData(double latitude, double longitude) {
+  private static WeatherData fetchWeatherData(double latitude, double longitude) {
     try {
       String url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude +
           "&longitude=" + longitude +
