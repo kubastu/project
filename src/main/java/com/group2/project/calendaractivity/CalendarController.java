@@ -4,6 +4,8 @@ import com.group2.project.calendarobjects.CalendarObject;
 import com.group2.project.calendarobjects.CalendarType;
 import com.group2.project.calendarobjects.Event;
 import com.group2.project.calendarobjects.Meeting;
+import com.group2.project.weather.Weather;
+import com.group2.project.weather.WeatherData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -76,6 +78,9 @@ public class CalendarController implements Initializable
         focusedDate = ZonedDateTime.now();
         today = ZonedDateTime.now();
 
+        Thread weatherCaller = new Thread(() -> getWeather());
+        weatherCaller.start();
+
         calendarWidth = calendar.getPrefWidth();
         calendarHeight = calendar.getPrefHeight();
         spacingH = calendar.getHgap();
@@ -120,6 +125,16 @@ public class CalendarController implements Initializable
                 onUnFocusEditing();
             }
         });
+    }
+
+    private void getWeather()
+    {
+        WeatherData weatherData = Weather.getWeatherData();
+        if (weatherData != null) {
+            System.out.println(weatherData);
+        } else {
+            System.out.println("Weather data could not be retrieved.");
+        }
     }
 
     private void respringCalendar()
