@@ -1,9 +1,6 @@
-package com.group2.project.addressbook;
+package com.group2.project.calendarobjects;
 
 
-import com.group2.project.calendarobjects.CalendarObject;
-import com.group2.project.calendarobjects.Event;
-import com.group2.project.calendarobjects.Meeting;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
