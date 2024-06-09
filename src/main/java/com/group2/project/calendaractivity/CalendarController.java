@@ -27,7 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import javax.swing.*;
 import java.util.*;
 
 public class CalendarController implements Initializable
@@ -53,6 +52,9 @@ public class CalendarController implements Initializable
 
     @FXML
     private ListView<String> eventsListView;
+
+    private boolean editing = false;
+    private int editingIndex = -1;
 
     // holds mappings for each month to
     //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
@@ -115,6 +117,7 @@ public class CalendarController implements Initializable
                 // will handle whenever user clicks on a different element in list view
                 String current = eventsListView.getSelectionModel().getSelectedItem();
                 //System.out.println(current);
+                onUnFocusEditing();
             }
         });
     }
@@ -217,6 +220,7 @@ public class CalendarController implements Initializable
                             respringCalendar();
                             // do listview
                             respringListView();
+                            onUnFocusEditing();
 //                            rectangle.setStroke(Color.RED);
 //                            rectangle.setStrokeWidth(strokeWidth + 0.5);
                         });
@@ -339,13 +343,29 @@ public class CalendarController implements Initializable
         // change time depending on calendarobject type
         ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
 
-        switch (type)
+        if(!editing)
         {
-            case CALENDAR_OBJECT -> addToMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
-            case EVENT -> addToMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, timeString)));
-            case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
+            switch (type)
+            {
+                case CALENDAR_OBJECT -> addToMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
+                case EVENT -> addToMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, timeString)));
+                case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
 
+            }
         }
+        else //if editing then it already exists in the map...
+        {
+            switch (type)
+            {
+                case CALENDAR_OBJECT -> editInMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
+                case EVENT -> editInMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, timeString)));
+                case MEETING -> editInMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
+
+            }
+        }
+
+
+        // todo check for editing
 
     }
 
@@ -359,9 +379,47 @@ public class CalendarController implements Initializable
 
         List<CalendarActivity> forSelected = getEventsForDate();
         int index = eventsListView.getSelectionModel().getSelectedIndex();
+        editingIndex = index;
+        CalendarActivity selected = forSelected.get(index);
+        editing = true;
 
-        System.out.println(forSelected.get(index));
-        System.out.println(eventsListView.getSelectionModel().getSelectedItem());
+        switch(selected.getType())
+        {
+            case CALENDAR_OBJECT -> {
+                comboBox.getSelectionModel().select("Calendar Object");
+                titleField.setText(selected.getCalendarObject().getTitle());
+                descField.setText(selected.getCalendarObject().getDescription());
+            }
+            case EVENT -> {
+                if(selected.getCalendarObject() instanceof Event)
+                {
+                    Event currentEvent;
+                    currentEvent = (Event) selected.getCalendarObject();
+                    comboBox.getSelectionModel().select("Event");
+                    titleField.setText(currentEvent.getTitle());
+                    descField.setText(currentEvent.getDescription());
+                    timeText.setText(currentEvent.getTime());
+                }
+            }
+            case MEETING -> {
+                if(selected.getCalendarObject() instanceof Meeting)
+                {
+                    Meeting currentMeeting;
+                    currentMeeting = (Meeting) selected.getCalendarObject();
+                    comboBox.getSelectionModel().select("Meeting");
+                    titleField.setText(currentMeeting.getTitle());
+                    descField.setText(currentMeeting.getDescription());
+                    timeText.setText(currentMeeting.getTime());
+                    locText.setText(currentMeeting.getLocation());
+                }
+            }
+
+        }
+
+
+
+//        System.out.println(forSelected.get(index));
+//        System.out.println(eventsListView.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -375,11 +433,27 @@ public class CalendarController implements Initializable
         List<CalendarActivity> forSelected = getEventsForDate();
         int index = eventsListView.getSelectionModel().getSelectedIndex();
 
+        calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).remove(index);
+
         //System.out.println(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).remove(index));
         //System.out.println(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()));
 
         calendar.getChildren().clear();
         drawCalendar();
+
+    }
+
+    private void onUnFocusEditing()
+    {
+        if(editing)
+        {
+            editing = false;
+            editingIndex = -1;
+            titleField.setText("");
+            descField.setText("");
+            locText.setText("");
+            timeText.setText("");
+        }
 
     }
 
@@ -457,6 +531,21 @@ public class CalendarController implements Initializable
             case "Meeting": return CalendarType.MEETING;
             case null, default: return CalendarType.CALENDAR_OBJECT;
         }
+    }
+
+    private void editInMap(CalendarActivity toEdit)
+    {
+        if(editingIndex == -1)
+        {
+            System.out.println("Editing index -1");
+            return;
+        }
+
+        calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).set(editingIndex, toEdit);
+
+        calendar.getChildren().clear();
+        drawCalendar();
+
     }
 
     private void addToMap(CalendarActivity toAdd)
