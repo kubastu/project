@@ -1,3 +1,1 @@
-{
-  "test" : "ok"
-}
+[{"months":[{"month":"6","days":[{"day":"19","events":[]},{"day":"10","events":[{"type":"CalendarObject","title":"CalObj","desc":"CalDesc"},{"time":"13:49","type":"Event","title":"event :3","desc":"EveDesc"},{"loc":"Chicago","time":"11:59","type":"Meeting","title":"MeetingObj","desc":"MeetDesc"}]},{"day":"11","events":[]}]}],"year":"2024"}]

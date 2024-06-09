@@ -76,12 +76,12 @@
                <Insets left="8.0" right="8.0" top="8.0" />
             </VBox.margin>
          </TextField>
-          <TextField fx:id="timeText" layoutX="18.0" layoutY="160.0" promptText="HH:MM?">
+          <TextField fx:id="timeField" layoutX="18.0" layoutY="160.0" promptText="HH:MM?">
               <VBox.margin>
                   <Insets left="8.0" right="8.0" top="8.0" />
               </VBox.margin>
           </TextField>
-         <TextField fx:id="locText" layoutX="18.0" layoutY="160.0" promptText="Location?">
+         <TextField fx:id="locField" layoutX="18.0" layoutY="160.0" promptText="Location?">
             <VBox.margin>
                <Insets left="8.0" right="8.0" top="8.0" />
             </VBox.margin>
@@ -118,5 +118,95 @@
       </children>
    </VBox>
    <Line endX="100.0" layoutX="373.0" layoutY="58.0" startX="-100.0" />
+   <VBox fx:id="todayInfo" alignment="TOP_CENTER" layoutX="1051.0" layoutY="7.0" prefHeight="625.0" prefWidth="201.0">
+      <children>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Info" textAlignment="CENTER" wrappingWidth="250.0">
+            <font>
+               <Font size="22.0" />
+            </font>
+         </Text>
+         <Line endX="532.5858154296875" endY="-0.20710599422454834" startX="332.29290771484375" startY="-0.20710676908493042">
+            <VBox.margin>
+               <Insets />
+            </VBox.margin></Line>
+         <Text fx:id="todayText" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Date: xx/xx/xxxx">
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="16.0" />
+            </VBox.margin>
+            <font>
+               <Font size="24.0" />
+            </font>
+         </Text>
+         <Line endX="100.0" startX="-100.0">
+            <VBox.margin>
+               <Insets top="16.0" />
+            </VBox.margin>
+         </Line>
+         <Text fx:id="locationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Location: xxx" textAlignment="CENTER">
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="32.0" />
+            </VBox.margin>
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Text>
+         <Text fx:id="tempText" strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature: xx°F">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </Text>
+         <Text fx:id="timeCheckedText" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Checked: xx:xx" textAlignment="CENTER">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </Text>
+         <Line endX="100.0" startX="-100.0">
+            <VBox.margin>
+               <Insets top="32.0" />
+            </VBox.margin>
+         </Line>
+         <Text fx:id="minTempText" strokeType="OUTSIDE" strokeWidth="0.0" text="Min Temp: xx°F">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="32.0" />
+            </VBox.margin>
+         </Text>
+         <Text fx:id="maxTempText" strokeType="OUTSIDE" strokeWidth="0.0" text="Max Temp: xx°F">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </Text>
+         <Text fx:id="sunriseText" strokeType="OUTSIDE" strokeWidth="0.0" text="Sunrise: xx:xx" textAlignment="CENTER">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </Text>
+         <Text fx:id="sunsetText" strokeType="OUTSIDE" strokeWidth="0.0" text="Sunset: xx:xx" textAlignment="CENTER">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="8.0" right="8.0" top="8.0" />
+            </VBox.margin>
+         </Text>
+      </children>
+      <padding>
+         <Insets right="8.0" />
+      </padding>
+   </VBox>
 
 </AnchorPane>

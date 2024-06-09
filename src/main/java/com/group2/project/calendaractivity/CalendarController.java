@@ -4,6 +4,8 @@ import com.group2.project.calendarobjects.CalendarObject;
 import com.group2.project.calendarobjects.CalendarType;
 import com.group2.project.calendarobjects.Event;
 import com.group2.project.calendarobjects.Meeting;
+import com.group2.project.jsonmanipulator.RawJSONParser;
+import com.group2.project.jsonmanipulator.RawJSONWriter;
 import com.group2.project.weather.Weather;
 import com.group2.project.weather.WeatherData;
 import javafx.beans.value.ChangeListener;
@@ -40,11 +42,19 @@ public class CalendarController implements Initializable
 
     private int selectedDay = 0;
 
+    // Core TextView's
     @FXML
     private Text yearText, monthText, selectedText, eventsText;
 
+    // Supplemental TextView's
     @FXML
-    private TextField titleField, descField, locText, timeText;
+    private Text todayText, locationText, tempText, timeCheckedText, minTempText, maxTempText, sunriseText, sunsetText;
+
+    @FXML
+    private VBox todayInfo;
+
+    @FXML
+    private TextField titleField, descField, locField, timeField;
 
     @FXML
     private FlowPane calendar;
@@ -96,24 +106,28 @@ public class CalendarController implements Initializable
             switch(newVal)
             {
                 case "Calendar Object":
-                    locText.setVisible(false);
-                    timeText.setVisible(false);
+                    locField.setVisible(false);
+                    timeField.setVisible(false);
                     break;
                 case "Event":
-                    locText.setVisible(false);
-                    timeText.setVisible(true);
+                    locField.setVisible(false);
+                    timeField.setVisible(true);
                     break;
                 case "Meeting":
-                    locText.setVisible(true);
-                    timeText.setVisible(true);
+                    locField.setVisible(true);
+                    timeField.setVisible(true);
                     break;
             }
         });
 
-        locText.setVisible(false);
-        timeText.setVisible(false);
+        locField.setVisible(false);
+        timeField.setVisible(false);
 
         drawCalendar();
+
+        // put threaded-jsonreader BELOW calendar because it is too fast...
+        Thread jsonCaller = new Thread(() -> RawJSONParser.readJSON(this));
+        jsonCaller.start();
 
         // from: https://www.youtube.com/watch?v=Pqfd4hoi5cc&ab_channel=BroCode
         eventsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -131,10 +145,42 @@ public class CalendarController implements Initializable
     {
         WeatherData weatherData = Weather.getWeatherData();
         if (weatherData != null) {
+            System.out.println("##########################");
             System.out.println(weatherData);
+            System.out.println("##########################");
+
+            todayText.setText("Today's Date: " + today.getMonthValue() + "/" + today.getDayOfMonth() + "/" + today.getYear());
+            locationText.setText("Location: Chicago");
+            timeCheckedText.setText("Time Checked: " + weatherData.getFormattedTime());
+            sunriseText.setText("Sunrise: " + weatherData.getSunrise());
+            sunsetText.setText("Sunset: " + weatherData.getSunset());
+            // special cases: convert to fahrenheit:
+            tempText.setText("Temperature: " + weatherData.convertTempToFahrenheit(weatherData.getTemperature()) + "°F");
+            minTempText.setText("Min Temp: " + weatherData.convertTempToFahrenheit(weatherData.getMinTemperature()) + "°F");
+            maxTempText.setText("Max Temp: " + weatherData.convertTempToFahrenheit(weatherData.getMaxTemperature()) + "°F");
+
         } else {
             System.out.println("Weather data could not be retrieved.");
+            locationText.setText("Unable to retrieve Weather.");
         }
+    }
+
+    public void acceptMap(Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> resultMap)
+    {
+        if(resultMap == null || resultMap.isEmpty())
+        {
+            System.out.println("Accepted Results are null");
+            return;
+        }
+
+        //System.out.println("Accepted: " + resultMap.size() + " years");
+
+        calendarEventMap.clear();
+        calendarEventMap.putAll(resultMap);
+
+        calendar.getChildren().clear();
+        drawCalendar();
+
     }
 
     private void respringCalendar()
@@ -309,7 +355,7 @@ public class CalendarController implements Initializable
                 calendarActivityMap.put(activityDate, newList);
             }
         }
-        return  calendarActivityMap;
+        return calendarActivityMap;
     }
 
     // JZ: FXML onclick functions below:
@@ -346,14 +392,14 @@ public class CalendarController implements Initializable
 
         String title = titleField.getText();
         String desc = descField.getText();
-        String timeString = timeText.getText();
-        String location = locText.getText();
+        String timeString = timeField.getText();
+        String location = locField.getText();
         CalendarType type = getTypeFromCombo();
 
         titleField.setText("");
         descField.setText("");
-        locText.setText("");
-        timeText.setText("");
+        locField.setText("");
+        timeField.setText("");
 
         // change time depending on calendarobject type
         ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
@@ -413,7 +459,7 @@ public class CalendarController implements Initializable
                     comboBox.getSelectionModel().select("Event");
                     titleField.setText(currentEvent.getTitle());
                     descField.setText(currentEvent.getDescription());
-                    timeText.setText(currentEvent.getTime());
+                    timeField.setText(currentEvent.getTime());
                 }
             }
             case MEETING -> {
@@ -424,8 +470,8 @@ public class CalendarController implements Initializable
                     comboBox.getSelectionModel().select("Meeting");
                     titleField.setText(currentMeeting.getTitle());
                     descField.setText(currentMeeting.getDescription());
-                    timeText.setText(currentMeeting.getTime());
-                    locText.setText(currentMeeting.getLocation());
+                    timeField.setText(currentMeeting.getTime());
+                    locField.setText(currentMeeting.getLocation());
                 }
             }
 
@@ -456,6 +502,8 @@ public class CalendarController implements Initializable
         calendar.getChildren().clear();
         drawCalendar();
 
+        writeToJSON();
+
     }
 
     private void onUnFocusEditing()
@@ -466,8 +514,8 @@ public class CalendarController implements Initializable
             editingIndex = -1;
             titleField.setText("");
             descField.setText("");
-            locText.setText("");
-            timeText.setText("");
+            locField.setText("");
+            timeField.setText("");
         }
 
     }
@@ -494,7 +542,7 @@ public class CalendarController implements Initializable
             System.out.println("Not valid time submission");
             return false;
         }
-        else if(comboBox.getValue().equals("Meeting") && locText.getText().isEmpty())
+        else if(comboBox.getValue().equals("Meeting") && locField.getText().isEmpty())
         {
             System.out.println("Not valid location text");
             return false;
@@ -505,7 +553,7 @@ public class CalendarController implements Initializable
 
     private boolean isValidTimeSubmission()
     {
-        String timeStamp = timeText.getText();
+        String timeStamp = timeField.getText();
 
         if(timeStamp == null || timeStamp.length() != 5)
         {
@@ -561,6 +609,8 @@ public class CalendarController implements Initializable
         calendar.getChildren().clear();
         drawCalendar();
 
+        writeToJSON();
+
     }
 
     private void addToMap(CalendarActivity toAdd)
@@ -602,6 +652,9 @@ public class CalendarController implements Initializable
         calendar.getChildren().clear();
         drawCalendar();
         //respringListView();
+
+        writeToJSON();
+
     }
 
     private List<CalendarActivity> getEventsForDate()
@@ -619,6 +672,12 @@ public class CalendarController implements Initializable
             return calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth());
         }
         return null;
+    }
+
+    private void writeToJSON()
+    {
+        Thread writeThread = new Thread(() -> RawJSONWriter.writeJSON(calendarEventMap));
+        writeThread.start();
     }
 
     // update ui functions below:
