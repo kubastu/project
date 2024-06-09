@@ -21,6 +21,11 @@ public class Meeting extends Event
     @Column(name = "LOCATION")
     private String location;
 
+    public Meeting()
+    {
+        super();
+    }
+
     public Meeting(ZonedDateTime date, String title, String description, String time, String location) {
         super(date, title, description, time);
         this.location = location;
