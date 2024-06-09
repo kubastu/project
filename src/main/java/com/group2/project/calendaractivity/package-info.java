@@ -1,4 +1,4 @@
-package com.group2.project.CalendarActivity;
+package com.group2.project.calendaractivity;
 
 /**
  * <b>This package defines Java classes that are responsible for communicating with the calendarActivity.fxml file.

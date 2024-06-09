@@ -1,12 +1,17 @@
-package com.group2.project.CalendarActivity;
+package com.group2.project.calendaractivity;
 
 import com.group2.project.calendarobjects.CalendarObject;
+import com.group2.project.calendarobjects.CalendarType;
+import com.group2.project.calendarobjects.Event;
+import com.group2.project.calendarobjects.Meeting;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
@@ -37,13 +42,19 @@ public class CalendarController implements Initializable
     private Text yearText, monthText, selectedText, eventsText;
 
     @FXML
-    private TextField titleField, descField;
+    private TextField titleField, descField, locText, timeText;
 
     @FXML
     private FlowPane calendar;
 
     @FXML
+    private ComboBox<String> comboBox;
+
+    @FXML
     private ListView<String> eventsListView;
+
+    private boolean editing = false;
+    private int editingIndex = -1;
 
     // holds mappings for each month to
     //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
@@ -72,6 +83,31 @@ public class CalendarController implements Initializable
         rectangleWidth = (calendarWidth/7) - strokeWidth - spacingH;
         rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
 
+        comboBox.setItems(FXCollections.observableArrayList("Calendar Object", "Event", "Meeting"));
+        comboBox.getSelectionModel().selectFirst();
+
+        comboBox.getSelectionModel().selectedItemProperty().addListener((opts, oldVal, newVal) -> {
+            System.out.println(oldVal + " -> " + newVal);
+            switch(newVal)
+            {
+                case "Calendar Object":
+                    locText.setVisible(false);
+                    timeText.setVisible(false);
+                    break;
+                case "Event":
+                    locText.setVisible(false);
+                    timeText.setVisible(true);
+                    break;
+                case "Meeting":
+                    locText.setVisible(true);
+                    timeText.setVisible(true);
+                    break;
+            }
+        });
+
+        locText.setVisible(false);
+        timeText.setVisible(false);
+
         drawCalendar();
 
         // from: https://www.youtube.com/watch?v=Pqfd4hoi5cc&ab_channel=BroCode
@@ -80,7 +116,8 @@ public class CalendarController implements Initializable
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 // will handle whenever user clicks on a different element in list view
                 String current = eventsListView.getSelectionModel().getSelectedItem();
-                System.out.println(current);
+                //System.out.println(current);
+                onUnFocusEditing();
             }
         });
     }
@@ -171,26 +208,25 @@ public class CalendarController implements Initializable
                         if(calendarActivityMap != null)
                         {
                             List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
-                            if(calendarActivities != null){
+                            if(calendarActivities != null && calendarActivities.size() > 0){
                                 createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
                             }
                         }
 
                         stackPane.setOnMouseClicked(mouseEvent -> {
-                            // todo fix this
-                            //selectedDate = focusedDate;
-                            //System.out.println("CLICKED" + focusedDate.toString());
                             System.out.println("Clicked Date: " + currentDate);
                             selectedDay = currentDate;
                             selected = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), selectedDay, 0, 0, 0, 0, focusedDate.getZone());
                             respringCalendar();
                             // do listview
                             respringListView();
+                            onUnFocusEditing();
 //                            rectangle.setStroke(Color.RED);
 //                            rectangle.setStrokeWidth(strokeWidth + 0.5);
                         });
                     }
-                    if(selectedDay == currentDate){
+                    if(selected != null && selected.getDayOfMonth() == currentDate && selected.getYear() == focusedDate.getYear() && selected.getMonth() == focusedDate.getMonth())
+                    {
                         rectangle.setStroke(Color.RED);
                         rectangle.setStrokeWidth(strokeWidth + 0.5);
                     }
@@ -220,7 +256,16 @@ public class CalendarController implements Initializable
 //                });
                 break;
             }
-            Text text = new Text(calendarActivities.get(k).getClientName() + ", " + calendarActivities.get(k).getDate().toLocalTime());
+            // todo : change time with this + make sure title cannot be too long
+            //Text text = new Text(calendarActivities.get(k).getCalendarObject().getTitle() + ", " + calendarActivities.get(k).getDate().toLocalTime());
+            String currTitle = calendarActivities.get(k).getCalendarObject().getTitle();
+            String usedTitle = currTitle;
+            if(currTitle.length() > 12)
+            {
+                usedTitle = currTitle.substring(0, 9) + "...";
+            }
+
+            Text text = new Text(usedTitle);
             calendarActivityBox.getChildren().add(text);
 //            text.setOnMouseClicked(mouseEvent -> {
 //                //On Text clicked
@@ -273,16 +318,234 @@ public class CalendarController implements Initializable
     @FXML
     private void submitCalendarObject(ActionEvent event)
     {
+        if(!isValidCalendarSubmission())
+        {
+            return;
+        }
+
+        if(selected == null)
+        {
+            System.out.println("Must select a date to mark for calendar object");
+            return;
+        }
+
         String title = titleField.getText();
         String desc = descField.getText();
+        String timeString = timeText.getText();
+        String location = locText.getText();
+        CalendarType type = getTypeFromCombo();
+
         titleField.setText("");
         descField.setText("");
+        locText.setText("");
+        timeText.setText("");
 
         // change time depending on calendarobject type
         ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
 
-//        calendarActivities.add(new CalendarActivity(time, title, 111111));
-        addToMap(new CalendarActivity(time, title, 111111));
+        if(!editing)
+        {
+            switch (type)
+            {
+                case CALENDAR_OBJECT -> addToMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
+                case EVENT -> addToMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, timeString)));
+                case MEETING -> addToMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
+
+            }
+        }
+        else //if editing then it already exists in the map...
+        {
+            switch (type)
+            {
+                case CALENDAR_OBJECT -> editInMap(new CalendarActivity(CalendarType.CALENDAR_OBJECT, time, new CalendarObject(time, title, desc)));
+                case EVENT -> editInMap(new CalendarActivity(CalendarType.EVENT, time, new Event(time, title, desc, timeString)));
+                case MEETING -> editInMap(new CalendarActivity(CalendarType.MEETING, time, new Meeting(time, title, desc, timeString, location)));
+
+            }
+        }
+
+
+        // todo check for editing
+
+    }
+
+    @FXML
+    private void editSelectedObject(ActionEvent event)
+    {
+        if(selected == null || eventsListView.getSelectionModel().getSelectedIndex() == -1)
+        {
+            return;
+        }
+
+        List<CalendarActivity> forSelected = getEventsForDate();
+        int index = eventsListView.getSelectionModel().getSelectedIndex();
+        editingIndex = index;
+        CalendarActivity selected = forSelected.get(index);
+        editing = true;
+
+        switch(selected.getType())
+        {
+            case CALENDAR_OBJECT -> {
+                comboBox.getSelectionModel().select("Calendar Object");
+                titleField.setText(selected.getCalendarObject().getTitle());
+                descField.setText(selected.getCalendarObject().getDescription());
+            }
+            case EVENT -> {
+                if(selected.getCalendarObject() instanceof Event)
+                {
+                    Event currentEvent;
+                    currentEvent = (Event) selected.getCalendarObject();
+                    comboBox.getSelectionModel().select("Event");
+                    titleField.setText(currentEvent.getTitle());
+                    descField.setText(currentEvent.getDescription());
+                    timeText.setText(currentEvent.getTime());
+                }
+            }
+            case MEETING -> {
+                if(selected.getCalendarObject() instanceof Meeting)
+                {
+                    Meeting currentMeeting;
+                    currentMeeting = (Meeting) selected.getCalendarObject();
+                    comboBox.getSelectionModel().select("Meeting");
+                    titleField.setText(currentMeeting.getTitle());
+                    descField.setText(currentMeeting.getDescription());
+                    timeText.setText(currentMeeting.getTime());
+                    locText.setText(currentMeeting.getLocation());
+                }
+            }
+
+        }
+
+
+
+//        System.out.println(forSelected.get(index));
+//        System.out.println(eventsListView.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    private void deleteSelectedObject(ActionEvent event)
+    {
+        if(selected == null || eventsListView.getSelectionModel().getSelectedIndex() == -1)
+        {
+            return;
+        }
+
+        List<CalendarActivity> forSelected = getEventsForDate();
+        int index = eventsListView.getSelectionModel().getSelectedIndex();
+
+        calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).remove(index);
+
+        //System.out.println(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).remove(index));
+        //System.out.println(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()));
+
+        calendar.getChildren().clear();
+        drawCalendar();
+
+    }
+
+    private void onUnFocusEditing()
+    {
+        if(editing)
+        {
+            editing = false;
+            editingIndex = -1;
+            titleField.setText("");
+            descField.setText("");
+            locText.setText("");
+            timeText.setText("");
+        }
+
+    }
+
+    private boolean isValidCalendarSubmission()
+    {
+        if(titleField.getText().isEmpty())
+        {
+            System.out.println("Not valid title text");
+            return false;
+        }
+        else if(descField.getText().isEmpty())
+        {
+            System.out.println("Not valid description text");
+            return false;
+        }
+        else if(comboBox.getValue() == null)
+        {
+            System.out.println("Not valid calendar object type");
+            return false;
+        }
+        else if((comboBox.getValue().equals("Event") || comboBox.getValue().equals("Meeting")) && !isValidTimeSubmission())
+        {
+            System.out.println("Not valid time submission");
+            return false;
+        }
+        else if(comboBox.getValue().equals("Meeting") && locText.getText().isEmpty())
+        {
+            System.out.println("Not valid location text");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidTimeSubmission()
+    {
+        String timeStamp = timeText.getText();
+
+        if(timeStamp == null || timeStamp.length() != 5)
+        {
+            return false;
+        }
+        else if(!timeStamp.substring(2, 3).equals(":"))
+        {
+            return false;
+        }
+        String hours = timeStamp.substring(0, 2);
+        String mins = timeStamp.substring(3, 5);
+        try {
+            int parsedH = Integer.parseInt(hours);
+            int parsedM = Integer.parseInt(mins);
+
+            if(parsedH < 0 || parsedH > 23)
+            {
+                return false;
+            }
+            else if(parsedM < 0 || parsedM > 59)
+            {
+                return false;
+            }
+
+        } catch(NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private CalendarType getTypeFromCombo()
+    {
+        switch(comboBox.getValue())
+        {
+            case "Calendar Object": return CalendarType.CALENDAR_OBJECT;
+            case "Event": return CalendarType.EVENT;
+            case "Meeting": return CalendarType.MEETING;
+            case null, default: return CalendarType.CALENDAR_OBJECT;
+        }
+    }
+
+    private void editInMap(CalendarActivity toEdit)
+    {
+        if(editingIndex == -1)
+        {
+            System.out.println("Editing index -1");
+            return;
+        }
+
+        calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()).set(editingIndex, toEdit);
+
+        calendar.getChildren().clear();
+        drawCalendar();
+
     }
 
     private void addToMap(CalendarActivity toAdd)

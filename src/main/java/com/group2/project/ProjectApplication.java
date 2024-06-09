@@ -15,6 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -73,7 +74,7 @@ public class ProjectApplication extends Application {
 					System.out.println("Description ?");
 					String tempDescription = br.readLine();
 
-					CalendarObject temp = new CalendarObject(new Date(), tempTitle, tempDescription);
+					CalendarObject temp = new CalendarObject(ZonedDateTime.now(), tempTitle, tempDescription);
 					CalendarManager.addCalendarObject(temp);
 				} else if(option.equals("R")) {
 					// TODO: Implement date + id for this to work
