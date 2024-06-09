@@ -55,6 +55,7 @@ public class WeatherData {
   @Override
   public String toString() {
     return "Current Time: " + time + "\n" +
+            "Current Parsed Time: " + formatTime(time) + "\n" +
         "Current Temperature (C): " + temperature + "\n" +
         "Max Temperature (C): " + maxTemperature + "\n" +
         "Min Temperature (C): " + minTemperature + "\n" +
