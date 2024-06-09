@@ -1,8 +1,8 @@
 /**
  * <b>Demonstrate my knowledge I have acquired from the class
  * <ul>
- * <li> For CRUD operations and SQL I used java persistence api (jpa) and crud repository
- * <li> Included 2 repositories; mongo and jpa
+ * @see ContactsRepository For CRUD operations and SQL I used java persistence api (jpa) and crud repository
+ * @see ContactsRepository and RelationRepository Included 2 repositories; mongo and jpa
  * <li> I included relational database for Relation.java to avoid circular dependencies
  * <li> For logging I used lombok
  * <li> Added unit tests to demonstrate repository working using JUnit
