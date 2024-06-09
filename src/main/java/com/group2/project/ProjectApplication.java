@@ -2,6 +2,7 @@ package com.group2.project;
 
 import com.group2.project.calendarobjects.CalendarObject;
 import com.group2.project.calendarobjects.Event;
+import com.group2.project.jsonparser.JSONReader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,6 +44,11 @@ public class ProjectApplication extends Application {
 		springContext = SpringApplication.run(ProjectApplication.class);
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/calendarActivity.fxml"));
 		rootNode = fxmlLoader.load();
+
+		Thread jsonLoader = new Thread(() -> {
+			JSONReader.openJSON();
+		});
+		jsonLoader.start();
 	}
 
 	// JZ: Launches the application in GUI mode:
