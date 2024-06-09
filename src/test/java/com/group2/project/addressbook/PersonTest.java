@@ -11,8 +11,9 @@ public class PersonTest {
         Person john = new Person();
         john.setFirstName("John");
         john.setPersonLastName("Smith");
-        String expectedWithError = "John Smith";
-        String expectedNoError = "Person(firstName=John, lastName=Smith)";
+        john.setAddress("1 E Jackson Blvd, Chicago, IL");
+        String expectedWithError = "John Smith 1 E Jackson Blvd, Chicago, IL";
+        String expectedNoError = "Person(firstName=John, personLastName=Smith, address=1 E Jackson Blvd, Chicago, IL)";
         assertEquals(expectedNoError, john.toString());
     }
 }

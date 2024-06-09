@@ -7,12 +7,10 @@ package com.group2.project.addressbook;
  *
  */
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+
 import lombok.Data;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
+
 
 @Data
 @Embeddable
@@ -21,4 +19,5 @@ public class Person {
 
     private String firstName;
     private String personLastName;
+    private String address;
 }

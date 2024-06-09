@@ -1,12 +1,9 @@
 # We are using the same commands as discussed in lecture in the terminal
-# create volume:   docker volume create calendar-db
 # Volumes are created so there is persistence with data
+# create volume: docker create volume calendar-db
+# create volume: docker create volume calendar-db2
 # start:   docker-compose -f docker-dbonly.yml up -d
 # stop:    docker-compose -f docker-dbonly.yml down
-# to copy data to volume for mongo: docker cp . data:/data/db
-# to copy data to volume for postgres: docker cp . data:/var/lib/postgresql/data
-
-
 
 version: '3.8'
 services:
@@ -15,7 +12,8 @@ services:
     image: postgres
     env_file: ./.env
     volumes:
-      - calendar-db:/var/lib/postgresql/data
+      - ./data-postgres:/var/lib/postgresql/data
+#      - calendar-db:/var/lib/postgresql/data
     restart: always
     ports:
       - $POSTGRES_PORT:$POSTGRES_PORT
@@ -26,11 +24,14 @@ services:
     image: mongo
     env_file: ./.env
     volumes:
-      - calendar-db:/data/db
+      - ./data-mongo:/data/db
+#      - calendar-db2:/data/db
     restart: always
     ports:
       - $MONGO_PORT:$MONGO_PORT
 #compose doesn't make a volume and uses calendar-db instead so it exists outside of the container
 volumes:
   calendar-db:
+    external: true
+  calendar-db2:
     external: true
