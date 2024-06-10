@@ -1,4 +1,4 @@
-package com.group2.project;
+package com.group2.project.headless;
 
 import com.group2.project.calendarobjects.CalendarObject;
 

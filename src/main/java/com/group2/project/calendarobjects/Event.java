@@ -30,12 +30,19 @@ public class Event extends CalendarObject
         this.time = time;
     }
 
+    // old standard:
+//    @Override
+//    public String toString() {
+//        return "Event{" +
+//                "title=" + getTitle() +
+//                "description=" + getDescription() +
+//                "time='" + time + '\'' +
+//                '}';
+//    }
+
+    // much cleaner for displaying in calendar:
     @Override
     public String toString() {
-        return "Event{" +
-                "title=" + getTitle() +
-                "description=" + getDescription() +
-                "time='" + time + '\'' +
-                '}';
+        return('\'' + getTitle() + "', '" + getDescription() + "', " + getTime());
     }
 }

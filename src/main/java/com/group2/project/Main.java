@@ -8,12 +8,11 @@ import org.springframework.context.annotation.ComponentScan;
 public class Main
 {
 
+    // Use this main when booting the program for correct FXML execution.
     public static void main(String[] args) {
         //SpringApplication.run(Main.class, args);
         ProjectApplication.main(args);
-
     }
-
 
 }
 
