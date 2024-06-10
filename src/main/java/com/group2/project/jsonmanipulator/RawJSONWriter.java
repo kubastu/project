@@ -14,8 +14,11 @@ import java.util.Map;
 public class RawJSONWriter
 {
 
+    // Class defines a JSON translator+parser for writing to an external JSON file.
+
     private final static String jsonDir = "src/main/docker/data-postgres/data-postgres.json";
 
+    // Static function that takes the map of Calendar Objects and dates to write to the JSON file.
     public static void writeJSON(Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> toWrite)
     {
         try {
@@ -23,6 +26,7 @@ public class RawJSONWriter
             JSONArray finalizedArray = parseJSON(toWrite);
 
             System.out.println("To Write: " + finalizedArray.toJSONString());
+
             // ! WARNING : calling new FileWriter() even without writing will overwrite existing file !
             FileWriter writer = new FileWriter(jsonDir);
             writer.write(finalizedArray.toJSONString());
@@ -33,28 +37,37 @@ public class RawJSONWriter
         }
     }
 
+    // Helper method that iterates through the map and translates values into appropriate JSON format.
     private static JSONArray parseJSON(Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> toParse)
     {
         JSONArray toReturn = new JSONArray();
 
+        // Iterate through all the year keys:
         for(Integer yearKey : toParse.keySet())
         {
             JSONObject yearObj = new JSONObject();
             yearObj.put("year", yearKey.toString());
             JSONArray monthsArray = new JSONArray(); // key : "months"
+
+            // Iterate through all the month keys:
             for(Integer monthKey : toParse.get(yearKey).keySet())
             {
                 JSONObject monthObj = new JSONObject();
                 monthObj.put("month", monthKey.toString());
                 JSONArray daysArray = new JSONArray(); // key : "days"
+
+                // Iterate through all the day keys:
                 for(Integer dayKey : toParse.get(yearKey).get(monthKey).keySet())
                 {
                     JSONObject dayObj = new JSONObject();
                     dayObj.put("day", dayKey.toString());
                     JSONArray eventsArray = new JSONArray();
+
+                    // Iterate through the list that contains CalendarActivity (higher level representations of CalendarObject(s))
                     for(CalendarActivity currentActivity : toParse.get(yearKey).get(monthKey).get(dayKey))
                     {
                         // parse CalendarActivity --> JSONObject
+                        // calls on helper method to parse values from the calendar object to a JSON object
                         JSONObject parsed = parseCalendarActivity(currentActivity);
                         eventsArray.add(parsed);
                     }
@@ -80,6 +93,7 @@ public class RawJSONWriter
         return toReturn;
     }
 
+    // helper-method that gets values from the runtime type of the CalendarObject and respectively fills in values for that representation of a JSON object.
     private static JSONObject parseCalendarActivity(CalendarActivity activity)
     {
         JSONObject toReturn = new JSONObject();
@@ -91,6 +105,7 @@ public class RawJSONWriter
                 toReturn.put("title", activity.getCalendarObject().getTitle());
                 toReturn.put("desc", activity.getCalendarObject().getDescription());
             }
+            // Note... downcasting is dangerous, but using [instanceof] comparison along with development insight makes it seamless & effective!
             case EVENT -> {
                 if(activity.getCalendarObject() instanceof Event)
                 {
