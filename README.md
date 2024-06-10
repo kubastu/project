@@ -15,9 +15,9 @@ Create a Calendar application where user can add/delete events and set reminders
 |--------|----------------------------------------------------------------------------|
 | Marina | Address Book + Email Notfications + Calendar Object                        |
 | Koji   | Appointment Creation + Weather App + Calendar Object + Email Notifications |
-| Jakub  | UI + Reminders                                                             |
+| Jakub  | JavaFX UI, UI Controller, Persistence JSON Reader + Writer                 |
 | Piyush | N/A                                                                        |
-| Sushanth | N/A                                                                        |
+| Sushanth | N/A                                                                      |
 
 <br/>
 
