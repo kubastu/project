@@ -36,6 +36,9 @@ import java.util.*;
 public class CalendarController implements Initializable
 {
 
+    // This class defines a 'main' running class that handles CRUD operations of Calendar Object representations, as well as front-end execution.
+    // -- -- This class handles ALL front-end interactions as well.
+
     // JZ: basic elements derived from: https://gist.github.com/Da9el00/f4340927b8ba6941eb7562a3306e93b6
 
     private ZonedDateTime focusedDate, today, selected;
@@ -72,6 +75,8 @@ public class CalendarController implements Initializable
     //private Map<Integer, List<CalendarActivity>> calendarEventMap = new HashMap<>();
 
     // map <year, <month, <day, activityOBJ>>>
+    // holds a mapping for persistent data structure
+    // motivation: hold year(s) --> month(s) --> day(s) --> events for that specific date (easy storing in JSON).
     private final Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> calendarEventMap = new HashMap<>();
 
     private double calendarWidth;
@@ -82,12 +87,14 @@ public class CalendarController implements Initializable
     private double rectangleWidth;
     private double rectangleHeight;
 
+    // Function that initializes most of the core functionalities (i.e. reading from persistence layer, starting up calendar, as well as graphical elements)
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         focusedDate = ZonedDateTime.now();
         today = ZonedDateTime.now();
 
+        // Gets the weather in a separate thread. Since calling an external API is asynchronous and takes time... this is efficient!
         Thread weatherCaller = new Thread(() -> getWeather());
         weatherCaller.start();
 
@@ -98,6 +105,7 @@ public class CalendarController implements Initializable
         rectangleWidth = (calendarWidth/7) - strokeWidth - spacingH;
         rectangleHeight = (calendarHeight/6) - strokeWidth - spacingV;
 
+        // sets the ComboBox for different types of our CalendarObject representations:
         comboBox.setItems(FXCollections.observableArrayList("Calendar Object", "Event", "Meeting"));
         comboBox.getSelectionModel().selectFirst();
 
@@ -125,7 +133,8 @@ public class CalendarController implements Initializable
 
         drawCalendar();
 
-        // put threaded-jsonreader BELOW calendar because it is too fast...
+        // Calls the JSON reader in a separate thread as to make more efficient the graphical start-up.
+        // -- -- Put threaded-jsonreader BELOW drawCalendar because it is too fast...
         Thread jsonCaller = new Thread(() -> RawJSONParser.readJSON(this));
         jsonCaller.start();
 
@@ -136,11 +145,14 @@ public class CalendarController implements Initializable
                 // will handle whenever user clicks on a different element in list view
                 String current = eventsListView.getSelectionModel().getSelectedItem();
                 //System.out.println(current);
+
+                // method disables editing toggle when user clicks away from current date which the user is editing
                 onUnFocusEditing();
             }
         });
     }
 
+    // Function that is called from a threaded-instance: gets the weather data for today and displays it.
     private void getWeather()
     {
         WeatherData weatherData = Weather.getWeatherData();
@@ -165,6 +177,7 @@ public class CalendarController implements Initializable
         }
     }
 
+    // Function that is called when reading from the JSON has finished. If the list has something then it is inserted into our Map, and redraws the calendar.
     public void acceptMap(Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> resultMap)
     {
         if(resultMap == null || resultMap.isEmpty())
@@ -183,9 +196,9 @@ public class CalendarController implements Initializable
 
     }
 
+    // Function that softly 'redraws' the elements on the calendar. (Mainly to run when a user has selected a different day square).
     private void respringCalendar()
     {
-        // todo : put this in a redundant function
         int dateOffset = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), 1,0,0,0,0,focusedDate.getZone()).getDayOfWeek().getValue();
 
         int monthMaxDate = focusedDate.getMonth().maxLength();
@@ -206,19 +219,22 @@ public class CalendarController implements Initializable
                 //System.out.println("OFFSET: " + dateOffset + "\nCURRENTDAY : " + currentDay + "\nToday: " + today.getDayOfMonth());
                 if(currentDay <= monthMaxDate)
                 {
+                    // If the square is the one the user has selected:
                     if(currentDay == selectedDay)
                     {
                         currentRect.setStroke(Color.RED);
-                        currentRect.setStrokeWidth(1 + 0.5); // change this
+                        currentRect.setStrokeWidth(1 + 0.5); // todo : can change this for differences in focused date square.
                         selectedText.setText("Selected Day: " + selected.getMonthValue() + "/" + selected.getDayOfMonth() + "/" + selected.getYear());
                         // get events
                         eventsText.setText("Events For: " + selected.getMonthValue() + "/" + selected.getDayOfMonth() + "/" + selected.getYear());
                         respringListView();
                     }
+                    // If the square is the one that represents today:
                     else if(today.getDayOfMonth() == currentDay && today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth()){
                         currentRect.setStroke(Color.BLUE);
                         currentRect.setStrokeWidth(strokeWidth + 0.5);
                     }
+                    // any other normal square:
                     else
                     {
                         currentRect.setStroke(Color.BLACK);
@@ -231,11 +247,12 @@ public class CalendarController implements Initializable
         }
     }
 
+    // Draws the calendar as well as all the components that supplement it.
     private void drawCalendar(){
         yearText.setText(String.valueOf(focusedDate.getYear()));
         monthText.setText(String.valueOf(focusedDate.getMonth()));
 
-        //List of activities for a given month
+        // Get List of activities for a given month using the ternary operator to make sure it is not null.
         Map<Integer, List<CalendarActivity>> calendarActivityMap = calendarEventMap.get(focusedDate.getYear()) == null ? null : calendarEventMap.get(focusedDate.getYear()).get(focusedDate.getMonthValue());
 
         int monthMaxDate = focusedDate.getMonth().maxLength();
@@ -269,13 +286,15 @@ public class CalendarController implements Initializable
                         if(calendarActivityMap != null)
                         {
                             List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
-                            if(calendarActivities != null && calendarActivities.size() > 0){
+                            // If there is an event on the current square:
+                            if(calendarActivities != null && !calendarActivities.isEmpty()){
                                 createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
                             }
                         }
 
+                        // On click function for selecting a 'square' day of the calendar.
                         stackPane.setOnMouseClicked(mouseEvent -> {
-                            System.out.println("Clicked Date: " + currentDate);
+                            //System.out.println("Clicked Date: " + currentDate);
                             selectedDay = currentDate;
                             selected = ZonedDateTime.of(focusedDate.getYear(), focusedDate.getMonthValue(), selectedDay, 0, 0, 0, 0, focusedDate.getZone());
                             respringCalendar();
@@ -286,11 +305,13 @@ public class CalendarController implements Initializable
 //                            rectangle.setStrokeWidth(strokeWidth + 0.5);
                         });
                     }
+                    // For selected date:
                     if(selected != null && selected.getDayOfMonth() == currentDate && selected.getYear() == focusedDate.getYear() && selected.getMonth() == focusedDate.getMonth())
                     {
                         rectangle.setStroke(Color.RED);
                         rectangle.setStrokeWidth(strokeWidth + 0.5);
                     }
+                    // For today's date:
                     if(today.getYear() == focusedDate.getYear() && today.getMonth() == focusedDate.getMonth() && today.getDayOfMonth() == currentDate){
                         rectangle.setStroke(Color.BLUE);
                         rectangle.setStrokeWidth(strokeWidth + 0.5);
@@ -300,34 +321,31 @@ public class CalendarController implements Initializable
             }
         }
 
+        // updates list view to show current objects for the specific date:
         respringListView();
     }
 
+    // creates a highlighted entry in the calendar visually to depict an event:
     private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight, double rectangleWidth, StackPane stackPane) {
         VBox calendarActivityBox = new VBox();
         for (int k = 0; k < calendarActivities.size(); k++) {
             if(k >= 2) {
                 Text moreActivities = new Text("..."); //maybe do   + X more
                 calendarActivityBox.getChildren().add(moreActivities);
-                //todo : change this into listview
-//                moreActivities.setOnMouseClicked(mouseEvent -> {
-//                    //On ... click print all activities for given date
-//                    System.out.println("events: " + calendarActivities.size());
-//                    System.out.println(calendarActivities);
-//                });
                 break;
             }
-            // todo : change time with this + make sure title cannot be too long
-            //Text text = new Text(calendarActivities.get(k).getCalendarObject().getTitle() + ", " + calendarActivities.get(k).getDate().toLocalTime());
+
             String currTitle = calendarActivities.get(k).getCalendarObject().getTitle();
-            String usedTitle = currTitle;
+            String usedTitle = "- " + currTitle;
             if(currTitle.length() > 12)
             {
-                usedTitle = currTitle.substring(0, 9) + "...";
+                usedTitle = "- " + currTitle.substring(0, 8) + "..";
             }
 
             Text text = new Text(usedTitle);
             calendarActivityBox.getChildren().add(text);
+
+            // can we use this for anything?
 //            text.setOnMouseClicked(mouseEvent -> {
 //                //On Text clicked
 //                System.out.println(text.getText());
@@ -336,7 +354,7 @@ public class CalendarController implements Initializable
         calendarActivityBox.setTranslateY((rectangleHeight / 2) * 0.20);
         calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
         calendarActivityBox.setMaxHeight(rectangleHeight * 0.65);
-        calendarActivityBox.setStyle("-fx-background-color:GRAY"); // todo can change this to be unique
+        calendarActivityBox.setStyle("-fx-background-color:GRAY"); // todo: can we change this to be unique?
         stackPane.getChildren().add(calendarActivityBox);
     }
 
@@ -376,6 +394,7 @@ public class CalendarController implements Initializable
         drawCalendar();
     }
 
+    // Function that checks if inputs are correct, for creating / editing a CalendarObject
     @FXML
     private void submitCalendarObject(ActionEvent event)
     {
@@ -386,16 +405,18 @@ public class CalendarController implements Initializable
 
         if(selected == null)
         {
-            System.out.println("Must select a date to mark for calendar object");
+            System.out.println("Must select a date to mark for calendar object.");
             return;
         }
 
+        // Gets info from ALL fields, even if they are invisible:
         String title = titleField.getText();
         String desc = descField.getText();
         String timeString = timeField.getText();
         String location = locField.getText();
         CalendarType type = getTypeFromCombo();
 
+        // reset the fields:
         titleField.setText("");
         descField.setText("");
         locField.setText("");
@@ -404,6 +425,7 @@ public class CalendarController implements Initializable
         // change time depending on calendarobject type
         ZonedDateTime time = ZonedDateTime.of(selected.getYear(), selected.getMonthValue(), selected.getDayOfMonth(), 0,0,0,0, focusedDate.getZone());
 
+        // if we are adding a new Calendar Object:
         if(!editing)
         {
             switch (type)
@@ -425,11 +447,9 @@ public class CalendarController implements Initializable
             }
         }
 
-
-        // todo check for editing
-
     }
 
+    // Function that gets selected item from list view and fills in appropriate fields for sake of editing:
     @FXML
     private void editSelectedObject(ActionEvent event)
     {
@@ -444,6 +464,7 @@ public class CalendarController implements Initializable
         CalendarActivity selected = forSelected.get(index);
         editing = true;
 
+        // further usage of instanceof to be able to downcast, since our high-level CalendarActivity stores only a CalendarObject. To downcast we much check runtime instance type!
         switch(selected.getType())
         {
             case CALENDAR_OBJECT -> {
@@ -477,12 +498,9 @@ public class CalendarController implements Initializable
 
         }
 
-
-
-//        System.out.println(forSelected.get(index));
-//        System.out.println(eventsListView.getSelectionModel().getSelectedItem());
     }
 
+    // function that defines functionality for deleting an object; removes it from the persistent representation map, then calls the write function, while updating the UI.
     @FXML
     private void deleteSelectedObject(ActionEvent event)
     {
@@ -506,6 +524,7 @@ public class CalendarController implements Initializable
 
     }
 
+    // when user clicks away while editing, resets all the values to visually indicate change in behavior.
     private void onUnFocusEditing()
     {
         if(editing)
@@ -520,37 +539,39 @@ public class CalendarController implements Initializable
 
     }
 
+    // checks to see if user's input is valid for sake of creating/editing a CalendarObject:
     private boolean isValidCalendarSubmission()
     {
         if(titleField.getText().isEmpty())
         {
-            System.out.println("Not valid title text");
+            System.out.println("Not valid title text.");
             return false;
         }
         else if(descField.getText().isEmpty())
         {
-            System.out.println("Not valid description text");
+            System.out.println("Not valid description text.");
             return false;
         }
         else if(comboBox.getValue() == null)
         {
-            System.out.println("Not valid calendar object type");
+            System.out.println("Not valid calendar object type.");
             return false;
         }
         else if((comboBox.getValue().equals("Event") || comboBox.getValue().equals("Meeting")) && !isValidTimeSubmission())
         {
-            System.out.println("Not valid time submission");
+            System.out.println("Not valid time submission.");
             return false;
         }
         else if(comboBox.getValue().equals("Meeting") && locField.getText().isEmpty())
         {
-            System.out.println("Not valid location text");
+            System.out.println("Not valid location text.");
             return false;
         }
 
         return true;
     }
 
+    // Separate function for checking if time formatting is appropriate:
     private boolean isValidTimeSubmission()
     {
         String timeStamp = timeField.getText();
@@ -585,6 +606,7 @@ public class CalendarController implements Initializable
         return true;
     }
 
+    // function that gets the type from the ComboBox:
     private CalendarType getTypeFromCombo()
     {
         switch(comboBox.getValue())
@@ -596,6 +618,7 @@ public class CalendarController implements Initializable
         }
     }
 
+    // Function that 'overwrites' (edits) a specific object in our persistence map, then calls the json writer.
     private void editInMap(CalendarActivity toEdit)
     {
         if(editingIndex == -1)
@@ -613,9 +636,10 @@ public class CalendarController implements Initializable
 
     }
 
+    // function that adds a new high-level CalendarActivity to our map. However, MUST check if all appropriate keys exist before insertion.
     private void addToMap(CalendarActivity toAdd)
     {
-        // year
+        // Check year key:
         if(calendarEventMap.get(selected.getYear()) == null)
         {
             calendarEventMap.put(selected.getYear(),
@@ -626,6 +650,7 @@ public class CalendarController implements Initializable
         }
         else
         {
+            // Check month key:
             if(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()) == null)
             {
                 calendarEventMap.get(selected.getYear()).put(selected.getMonthValue(), new HashMap<>());
@@ -634,6 +659,7 @@ public class CalendarController implements Initializable
             }
             else
             {
+                // check day key:
                 if(calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth()) == null)
                 {
                     calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).put(selected.getDayOfMonth(), new ArrayList<>());
@@ -641,22 +667,22 @@ public class CalendarController implements Initializable
                 }
                 else
                 {
+                    // ready to add:
                     calendarEventMap.get(selected.getYear()).get(selected.getMonthValue()).get(selected.getDayOfMonth())
                             .add(toAdd);
                 }
             }
         }
 
-        // todo : can we respring ui instead of completely redraw?
-        // todo : implement respring... causes not clean ui action.
+        // Note: is it possible to respring calendar? As opposed to re-drawing it after any change?
         calendar.getChildren().clear();
         drawCalendar();
-        //respringListView();
 
         writeToJSON();
 
     }
 
+    // function that returns a list of CalendarActivity objects for whatever date the user has selected:
     private List<CalendarActivity> getEventsForDate()
     {
         if(selected == null)
@@ -674,13 +700,14 @@ public class CalendarController implements Initializable
         return null;
     }
 
+    // function that calls a threaded instance of our json writer. Since this action takes time, efficient to do it in a separate thread!
     private void writeToJSON()
     {
         Thread writeThread = new Thread(() -> RawJSONWriter.writeJSON(calendarEventMap));
         writeThread.start();
     }
 
-    // update ui functions below:
+    // Function updates the listview for specific day:
     private void respringListView()
     {
         List<CalendarActivity> forSelected = getEventsForDate();
