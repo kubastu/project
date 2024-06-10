@@ -2,6 +2,7 @@
 # Volumes are created so there is persistence with data
 # create volume: docker create volume calendar-db
 # create volume: docker create volume calendar-db2
+# We decided to not connect the container to the volume so only need to start and stop
 # start:   docker-compose -f docker-dbonly.yml up -d
 # stop:    docker-compose -f docker-dbonly.yml down
 
