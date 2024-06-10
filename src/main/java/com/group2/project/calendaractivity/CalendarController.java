@@ -157,9 +157,9 @@ public class CalendarController implements Initializable
     {
         WeatherData weatherData = Weather.getWeatherData();
         if (weatherData != null) {
-            System.out.println("##########################");
-            System.out.println(weatherData);
-            System.out.println("##########################");
+            //System.out.println("##########################");
+            //System.out.println(weatherData);
+            //System.out.println("##########################");
 
             todayText.setText("Today's Date: " + today.getMonthValue() + "/" + today.getDayOfMonth() + "/" + today.getYear());
             locationText.setText("Location: Chicago");

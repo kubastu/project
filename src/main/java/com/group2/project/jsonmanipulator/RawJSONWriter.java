@@ -25,7 +25,7 @@ public class RawJSONWriter
 
             JSONArray finalizedArray = parseJSON(toWrite);
 
-            System.out.println("To Write: " + finalizedArray.toJSONString());
+            //System.out.println("To Write: " + finalizedArray.toJSONString());
 
             // ! WARNING : calling new FileWriter() even without writing will overwrite existing file !
             FileWriter writer = new FileWriter(jsonDir);

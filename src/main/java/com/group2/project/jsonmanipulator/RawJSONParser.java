@@ -49,7 +49,7 @@ public class RawJSONParser
             JSONParser parser = new JSONParser();
             JSONArray arr = (JSONArray) parser.parse(result.toString());
 
-            System.out.println(arr.toJSONString());
+            //System.out.println(arr.toJSONString());
 
             // Calls on helper-function to appropriately parse the JSON and send it back to CalendarController::acceptMap()
             parseJSON(calendarController, arr);
@@ -98,7 +98,7 @@ public class RawJSONParser
                             year = Integer.parseInt(yearId);
                             month = Integer.parseInt(monthId);
                             day = Integer.parseInt(dayId);
-                            System.out.println("Parsing: " + year + "-" + month + "-" + day);
+                            //System.out.println("Parsing: " + year + "-" + month + "-" + day);
 
                             ZonedDateTime dateTime = ZonedDateTime.of(year, month, day, 0, 0, 0, 0, temp.getZone());
 
@@ -179,7 +179,7 @@ public class RawJSONParser
             }
         }
 
-        System.out.println("Parsed: " + toReturn.getCalendarObject());
+        //System.out.println("Parsed: " + toReturn.getCalendarObject());
 
         return toReturn;
     }
