@@ -31,13 +31,20 @@ public class Meeting extends Event
         this.location = location;
     }
 
+    // old standard:
+//    @Override
+//    public String toString() {
+//        return "Meeting{" +
+//                "title=" + getTitle() +
+//                "description=" + getDescription() +
+//                "time=" + getTime() +
+//                "location='" + location + '\'' +
+//                '}';
+//    }
+
+    // much cleaner for displaying in calendar:
     @Override
     public String toString() {
-        return "Meeting{" +
-                "title=" + getTitle() +
-                "description=" + getDescription() +
-                "time=" + getTime() +
-                "location='" + location + '\'' +
-                '}';
+        return('\'' + getTitle() + "', '" + getDescription() + "', " + getTime() + " @ '" + getLocation() + '\'');
     }
 }

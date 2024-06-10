@@ -45,11 +45,18 @@ public class CalendarObject
         this.description = description;
     }
 
+    // old standard:
+//    @Override
+//    public String toString() {
+//        return "CalendarObject{" +
+//                "title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                '}';
+//    }
+
+    // much cleaner for displaying in calendar:
     @Override
     public String toString() {
-        return "CalendarObject{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return('\'' + getTitle() + "', '" + getDescription() + '\'');
     }
 }

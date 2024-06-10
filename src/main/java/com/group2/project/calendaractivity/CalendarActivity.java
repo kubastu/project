@@ -15,7 +15,7 @@ import java.util.Date;
 public class CalendarActivity
 {
 
-    // todo : implement this with our calendarobjects
+    // This class defines a high-level object representation for our CalendarObjects that will be used within our CalendarController.
 
     private CalendarType type;
 
@@ -36,6 +36,7 @@ public class CalendarActivity
         calendarObject = obj;
     }
 
+    // unused method that provides programmatic insight as to how to make the compiler allow you to downcast, which is important to us for writing to a json!
     public CalendarType getNativeType()
     {
         if(calendarObject instanceof Meeting)
