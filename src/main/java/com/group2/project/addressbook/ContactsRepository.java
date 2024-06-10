@@ -1,7 +1,6 @@
 package com.group2.project.addressbook;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
 /**
