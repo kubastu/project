@@ -11,13 +11,13 @@ Create a Calendar application where user can add/delete events and set reminders
 
 ## Project Members
 
-| Member | Area                                                             |
-|--------|------------------------------------------------------------------|
-| Marina | Address Book                                                     |
-| Koji   | Appointment Creation + Calendar Type                             |
-| Jakub  | UI + Reminders                                                        |
-| Piyush | Sharing a Link With Open Meeting Times of People in Address Book |
-| Sushanth | To-Do/Task List                                                  |
+| Member | Area                                                                       |
+|--------|----------------------------------------------------------------------------|
+| Marina | Address Book + Email Notfications + Calendar Object                        |
+| Koji   | Appointment Creation + Weather App + Calendar Object + Email Notifications |
+| Jakub  | UI + Reminders                                                             |
+| Piyush | N/A                                                                        |
+| Sushanth | N/A                                                                        |
 
 <br/>
 
