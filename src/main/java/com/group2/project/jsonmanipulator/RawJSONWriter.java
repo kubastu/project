@@ -19,22 +19,14 @@ public class RawJSONWriter
     public static void writeJSON(Map<Integer, Map<Integer, Map<Integer, List<CalendarActivity>>>> toWrite)
     {
         try {
-            //FileWriter writer = new FileWriter(jsonDir);
-            // writer.write(jsonObj.toString) ++ writer.close()
 
             JSONArray finalizedArray = parseJSON(toWrite);
-            if(finalizedArray == null)
-            {
-                // todo: how to handle this case?
-            }
-            else
-            {
-                System.out.println("To Write: " + finalizedArray.toJSONString());
-                // ! WARNING : calling new FileWriter() even without writing will overwrite existing file !
-                FileWriter writer = new FileWriter(jsonDir);
-                writer.write(finalizedArray.toJSONString());
-                writer.close();
-            }
+
+            System.out.println("To Write: " + finalizedArray.toJSONString());
+            // ! WARNING : calling new FileWriter() even without writing will overwrite existing file !
+            FileWriter writer = new FileWriter(jsonDir);
+            writer.write(finalizedArray.toJSONString());
+            writer.close();
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -66,14 +58,23 @@ public class RawJSONWriter
                         JSONObject parsed = parseCalendarActivity(currentActivity);
                         eventsArray.add(parsed);
                     }
-                    dayObj.put("events", eventsArray);
-                    daysArray.add(dayObj);
+                    if(!eventsArray.isEmpty())
+                    {
+                        dayObj.put("events", eventsArray);
+                        daysArray.add(dayObj);
+                    }
                 }
-                monthObj.put("days", daysArray);
-                monthsArray.add(monthObj);
+                if(!daysArray.isEmpty())
+                {
+                    monthObj.put("days", daysArray);
+                    monthsArray.add(monthObj);
+                }
             }
-            yearObj.put("months", monthsArray);
-            toReturn.add(yearObj);
+            if(!monthsArray.isEmpty())
+            {
+                yearObj.put("months", monthsArray);
+                toReturn.add(yearObj);
+            }
         }
 
         return toReturn;
