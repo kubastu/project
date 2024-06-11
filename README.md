@@ -7,6 +7,8 @@ Create a Calendar application where user can add/delete events and set reminders
 
 - Milestone 3: Add services and more relationships.
 
+- Final: Updated with RESTful services and persistence. 
+
 <br>
 
 ## Project Members
@@ -15,7 +17,7 @@ Create a Calendar application where user can add/delete events and set reminders
 |--------|----------------------------------------------------------------------------|
 | Marina | Address Book + Email Notfications + Calendar Object                        |
 | Koji   | Appointment Creation + Weather App + Calendar Object + Email Notifications |
-| Jakub  | UI + Reminders                                                             |
+| Jakub  | JavaFX UI + UI Controller + Persistence JSON Reader + Writer               |
 | Piyush | N/A                                                                        |
 | Sushanth | N/A                                                                        |
 
@@ -32,11 +34,11 @@ Will meet using Discord and Github.  Will meet once a week on days Thursday thro
 <br/>
 
 ## Decision Made
-| # | Area            | Decision                                                | Alternative                                        | Rationale
-| ----------- |-----------------|---------------------------------------------------------|----------------------------------------------------|--- |
-| 1 | Individual Work | Made sure everyone has their own distinct contributions | Can do work on what is different from assigned task | Addressing professor's advice
-| 2 | Meetings        | Had more meetings and specific merging meeting          | None                                               | To make sure we address all of professor's comments
-| 3 |                 |                                                         |                                                    | 
+| # | Area                       | Decision                                      | Alternative                    | Rationale
+| ----------- |----------------------------|-----------------------------------------------|--------------------------------|--- |
+| 1 | How to Include Persistence | Whether to use Docker or not                  | Save to local database         | Meet Project Rubric Requirements
+| 2 | Parsing Json               | Came up with dependency to parse Json in Java | Jave does not have Json reader | To make sure we address all of professor's comments
+| 3 | Which Tests to Include     | Read the Spring Boot chapter on Tests         | See project examples           | To demonstrate the database works
 
 
 
