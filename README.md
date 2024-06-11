@@ -5,9 +5,9 @@ Create a Calendar application where user can add/delete events and set reminders
 
 - Milestone 2: Define database structure.
 
-- Milestone 3: Add services and more relationships.
+- Milestone 3: Incorporated UI.
 
-- Final: Updated with RESTful services and persistence. 
+- Final: Touched up, added API's and persistence. 
 
 <br>
 
